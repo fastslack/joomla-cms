@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset addfieldpath="/administrator/components/com_categories/models/fields">
+		<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL"
+			readonly="true" class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC"/>
+
+		<field
+			name="priority"
+			type="list"
+			label="COM_BUGS_FIELD_PRIORITY"
+			description="COM_BUGS_FIELD_PRIORITY_DESC"
+			class="inputbox small"
+			size="1"
+			default="3"
+			required="true">
+			<option
+				value="5">JHIGH</option>
+			<option
+				value="4">JMEDIUMHIGH</option>
+			<option
+				value="3">JMEDIUM</option>
+			<option
+				value="2">JMEDIUMLOW</option>
+			<option
+				value="1">JLOW</option>
+		</field>
+
+		<field name="summary" type="text" class="inputbox span10"
+			size="40" label="COM_BUGS_FIELD_SUMMARY"
+			description="COM_BUGS_FIELD_SUMMARY_DESC" required="true" />
+
+		<field name="catid" type="categoryedit" extension="com_bugs"
+			label="JCATEGORY" description="COM_BUGS_FIELD_CATEGORY_DESC"
+			class="inputbox" required="true">
+		</field>
+
+		<field name="test_instructions" type="editor" mode="0" buttons="true" hide="pagebreak,readmore,article"
+			class="inputbox"
+			filter="JComponentHelper::filterText"
+			label="COM_BUGS_FIELD_TEST_INSTRUCTIONS" description="COM_BUGS_FIELD_TEST_INSTRUCTIONS_DESC" />
+
+		<field name="description" type="editor" mode="0" buttons="true" hide="pagebreak,readmore,article"
+			class="inputbox"
+			filter="JComponentHelper::filterText"
+			label="COM_BUGS_FIELD_DESCRIPTION" description="COM_BUGS_FIELD_DESCRIPTION_DESC" />
+
+		<field name="version_server" type="text" class="inputbox span10 disabled"
+			label="COM_BUGS_FIELD_VERSION_SERVER"
+			description="COM_BUGS_FIELD_VERSION_SERVER_DESC" disabled="true" />
+
+		<field name="version_php" type="text" class="inputbox span10 disabled"
+			label="COM_BUGS_FIELD_VERSION_PHP"
+			description="COM_BUGS_FIELD_VERSION_PHP_DESC" disabled="true" />
+
+		<field name="version_mysql" type="text" class="inputbox span10 disabled"
+			label="COM_BUGS_FIELD_VERSION_MYSQL"
+			description="COM_BUGS_FIELD_VERSION_MYSQL_DESC" disabled="true" />
+
+		<field name="version_joomla" type="text" class="inputbox span10 disabled"
+			label="COM_BUGS_FIELD_VERSION_JOOMLA"
+			description="COM_BUGS_FIELD_VERSION_JOOMLA_DESC" disabled="true" />
+
+		<field name="version_browser" type="text" class="inputbox span10 disabled"
+			label="COM_BUGS_FIELD_VERSION_BROWSER"
+			description="COM_BUGS_FIELD_VERSION_BROWSER_DESC" disabled="true" />
+
+	</fieldset>
+
+</form>
