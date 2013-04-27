@@ -24,12 +24,18 @@ defined('_JEXEC') or die;
 				</div>
 
 				<div class="control-group">
+					<div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
+				</div>
+
+				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('summary'); ?></div>
 					<div class="controls"><?php echo $this->form->getInput('summary'); ?></div>
 				</div>
+
 				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
-					<div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
+					<div class="control-label"><?php echo $this->form->getLabel('github'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('github'); ?></div>
 				</div>
 
 				<div class="control-group">
@@ -49,7 +55,7 @@ defined('_JEXEC') or die;
 		</div>
 
 	<div class="span4">
-	<h4>Versions</h4>
+	<h4><?php echo JText::_('COM_BUGS_LABEL_TECHNICAL'); ?> </h4>
 		<hr>
 		<fieldset class="form-vertical">
 			

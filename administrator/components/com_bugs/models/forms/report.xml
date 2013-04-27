@@ -26,14 +26,18 @@
 				value="1">JLOW</option>
 		</field>
 
-		<field name="summary" type="text" class="inputbox span10"
-			size="40" label="COM_BUGS_FIELD_SUMMARY"
-			description="COM_BUGS_FIELD_SUMMARY_DESC" required="true" />
-
 		<field name="catid" type="categoryedit" extension="com_bugs"
 			label="JCATEGORY" description="COM_BUGS_FIELD_CATEGORY_DESC"
 			class="inputbox" required="true">
 		</field>
+
+		<field name="summary" type="text" class="inputbox span10"
+			size="40" label="COM_BUGS_FIELD_SUMMARY"
+			description="COM_BUGS_FIELD_SUMMARY_DESC" required="true" />
+
+		<field name="github" type="text" class="inputbox span10"
+			size="40" label="COM_BUGS_FIELD_GITHUB"
+			description="COM_BUGS_FIELD_GITHUB_DESC" required="true" />
 
 		<field name="test_instructions" type="editor" mode="0" buttons="true" hide="pagebreak,readmore,article"
 			class="inputbox"
