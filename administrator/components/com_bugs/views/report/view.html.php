@@ -46,7 +46,7 @@ class JBugsViewReport extends JViewLegacy
 
 		// Setting the toolbar
 		JToolbarHelper::title(JText::_( 'Report bugs' ), 'bugs');
-		JToolbarHelper::custom('report.send', 'health.png', '', 'COM_BUGS_SEND', false);
+		JToolbarHelper::custom('report.send', 'health.png', 'health.png', 'COM_BUGS_SEND', false);
 		JToolbarHelper::spacer();
 
 		parent::display($tpl);
