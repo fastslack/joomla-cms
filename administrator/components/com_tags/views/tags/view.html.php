@@ -24,8 +24,6 @@ class TagsViewTags extends JViewLegacy
 
 	protected $state;
 
-	protected $assoc;
-
 	/**
 	 * Display the view
 	 */
@@ -81,7 +79,7 @@ class TagsViewTags extends JViewLegacy
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_TAGS_MANAGER_TAGS'), 'modules.png');
+		JToolbarHelper::title(JText::_('COM_TAGS_MANAGER_TAGS'), 'tags');
 
 		if ($canDo->get('core.create'))
 		{
@@ -112,7 +110,7 @@ class TagsViewTags extends JViewLegacy
 			JToolbarHelper::trash('tags.trash');
 		}
 		// Add a batch button
-		if ($user->authorise('core.edit'))
+		if ($user->authorise('core.create', 'com_tags') && $user->authorise('core.edit', 'com_tags') && $user->authorise('core.edit.state', 'com_tags'))
 		{
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -125,7 +123,7 @@ class TagsViewTags extends JViewLegacy
 		{
 			JToolbarHelper::preferences('com_tags');
 		}
-		JToolbarHelper::help('JHELP_COMPONENTS_TAGS');
+		JToolbarHelper::help('JHELP_COMPONENTS_TAGS_MANAGER');
 
 		JHtmlSidebar::setAction('index.php?option=com_tags&view=tags');
 

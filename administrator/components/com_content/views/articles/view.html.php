@@ -117,7 +117,7 @@ class ContentViewArticles extends JViewLegacy
 		}
 
 		// Add a batch button
-		if ($user->authorise('core.edit'))
+		if ($user->authorise('core.create', 'com_content') && $user->authorise('core.edit', 'com_content') && $user->authorise('core.edit.state', 'com_content'))
 		{
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -171,6 +171,12 @@ class ContentViewArticles extends JViewLegacy
 			'filter_language',
 			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
 		);
+
+		JHtmlSidebar::addFilter(
+		JText::_('JOPTION_SELECT_TAG'),
+		'filter_tag',
+		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
+		);
 	}
 
 	/**
@@ -191,7 +197,8 @@ class ContentViewArticles extends JViewLegacy
 			'a.created_by' => JText::_('JAUTHOR'),
 			'language' => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.created' => JText::_('JDATE'),
-			'a.id' => JText::_('JGRID_HEADING_ID')
+			'a.id' => JText::_('JGRID_HEADING_ID'),
+			'a.featured' => JText::_('JFEATURED')
 		);
 	}
 }

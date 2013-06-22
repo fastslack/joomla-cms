@@ -82,7 +82,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	 */
 	public function __destruct()
 	{
-		if (is_callable($this->connection, 'close'))
+		if (is_callable(array($this->connection, 'close')))
 		{
 			mysqli_close($this->connection);
 		}
@@ -280,9 +280,20 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	{
 		$this->connect();
 
-		$this->setQuery('SHOW FULL COLUMNS FROM #__users');
+		$tables = $this->getTableList();
+
+		$this->setQuery('SHOW FULL COLUMNS FROM ' . $tables[0]);
 		$array = $this->loadAssocList();
-		return $array['2']['Collation'];
+
+		foreach ($array as $field)
+		{
+			if (!is_null($field['Collation']))
+			{
+				return $field['Collation'];
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -428,7 +439,8 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	/**
 	 * Method to get the auto-incremented value from the last INSERT statement.
 	 *
-	 * @return  integer  The value of the auto-increment field from the last inserted row.
+	 * @return  mixed  The value of the auto-increment field from the last inserted row.
+	 *                 If the value is greater than maximal int value, it will return a string.
 	 *
 	 * @since   12.1
 	 */
@@ -475,10 +487,10 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		}
 
 		// Take a local copy so that we don't modify the original query and cause issues later
-		$sql = $this->replacePrefix((string) $this->sql);
+		$query = $this->replacePrefix((string) $this->sql);
 		if ($this->limit > 0 || $this->offset > 0)
 		{
-			$sql .= ' LIMIT ' . $this->offset . ', ' . $this->limit;
+			$query .= ' LIMIT ' . $this->offset . ', ' . $this->limit;
 		}
 
 		// Increment the query counter.
@@ -488,9 +500,9 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		if ($this->debug)
 		{
 			// Add the query to the object queue.
-			$this->log[] = $sql;
+			$this->log[] = $query;
 
-			JLog::add($sql, JLog::DEBUG, 'databasequery');
+			JLog::add($query, JLog::DEBUG, 'databasequery');
 		}
 
 		// Reset the error values.
@@ -498,13 +510,13 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		$this->errorMsg = '';
 
 		// Execute the query. Error suppression is used here to prevent warnings/notices that the connection has been lost.
-		$this->cursor = @mysqli_query($this->connection, $sql);
+		$this->cursor = @mysqli_query($this->connection, $query);
 
 		// If an error occurred handle it.
 		if (!$this->cursor)
 		{
 			$this->errorNum = (int) mysqli_errno($this->connection);
-			$this->errorMsg = (string) mysqli_error($this->connection) . ' SQL=' . $sql;
+			$this->errorMsg = (string) mysqli_error($this->connection) . ' SQL=' . $query;
 
 			// Check if the server was disconnected.
 			if (!$this->connected())
@@ -600,49 +612,94 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	/**
 	 * Method to commit a transaction.
 	 *
+	 * @param   boolean  $toSavepoint  If true, commit to the last savepoint.
+	 *
 	 * @return  void
 	 *
 	 * @since   12.2
 	 * @throws  RuntimeException
 	 */
-	public function transactionCommit()
+	public function transactionCommit($toSavepoint = false)
 	{
 		$this->connect();
 
-		$this->setQuery('COMMIT');
-		$this->execute();
+		if (!$toSavepoint || $this->transactionDepth <= 1)
+		{
+			if ($this->setQuery('COMMIT')->execute())
+			{
+				$this->transactionDepth = 0;
+			}
+
+			return;
+		}
+
+		$this->transactionDepth--;
 	}
 
 	/**
 	 * Method to roll back a transaction.
 	 *
+	 * @param   boolean  $toSavepoint  If true, rollback to the last savepoint.
+	 *
 	 * @return  void
 	 *
 	 * @since   12.2
 	 * @throws  RuntimeException
 	 */
-	public function transactionRollback()
+	public function transactionRollback($toSavepoint = false)
 	{
 		$this->connect();
 
-		$this->setQuery('ROLLBACK');
-		$this->execute();
+		if (!$toSavepoint || $this->transactionDepth <= 1)
+		{
+			if ($this->setQuery('ROLLBACK')->execute())
+			{
+				$this->transactionDepth = 0;
+			}
+
+			return;
+		}
+
+		$savepoint = 'SP_' . ($this->transactionDepth - 1);
+		$this->setQuery('ROLLBACK TO SAVEPOINT ' . $this->quoteName($savepoint));
+
+		if ($this->execute())
+		{
+			$this->transactionDepth--;
+		}
 	}
 
 	/**
 	 * Method to initialize a transaction.
 	 *
+	 * @param   boolean  $asSavepoint  If true and a transaction is already active, a savepoint will be created.
+	 *
 	 * @return  void
 	 *
 	 * @since   12.2
 	 * @throws  RuntimeException
 	 */
-	public function transactionStart()
+	public function transactionStart($asSavepoint = false)
 	{
 		$this->connect();
 
-		$this->setQuery('START TRANSACTION');
-		$this->execute();
+		if (!$asSavepoint || !$this->transactionDepth)
+		{
+			if ($this->setQuery('START TRANSACTION')->execute())
+			{
+				$this->transactionDepth = 1;
+			}
+
+			return;
+		}
+
+		$savepoint = 'SP_' . $this->transactionDepth;
+		$this->setQuery('SAVEPOINT ' . $this->quoteName($savepoint));
+
+		if ($this->execute())
+		{
+			$this->transactionDepth++;
+		}
 	}
 
 	/**

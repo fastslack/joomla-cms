@@ -97,8 +97,6 @@ class WeblinksModelWeblink extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_weblinks.weblink', 'weblink', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form))
@@ -190,8 +188,9 @@ class WeblinksModelWeblink extends JModelAdmin
 
 			if (!empty($item->id))
 			{
-				$item->tags = new JTags;
+				$item->tags = new JHelperTags;
 				$item->tags->getTagIds($item->id, 'com_weblinks.weblink');
+				$item->metadata['tags'] = $item->tags;
 			}
 		}
 
@@ -273,6 +272,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
 			$data['title']	= $name;
 			$data['alias']	= $alias;
+			$data['state']	= 0;
 		}
 		$return = parent::save($data);
 

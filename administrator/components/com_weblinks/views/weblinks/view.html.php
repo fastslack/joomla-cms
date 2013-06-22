@@ -26,6 +26,8 @@ class WeblinksViewWeblinks extends JViewLegacy
 
 	/**
 	 * Display the view
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -87,7 +89,7 @@ class WeblinksViewWeblinks extends JViewLegacy
 			JToolbarHelper::trash('weblinks.trash');
 		}
 		// Add a batch button
-		if ($canDo->get('core.edit'))
+		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks') && $user->authorise('core.edit.state', 'com_weblinks'))
 		{
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -128,6 +130,13 @@ class WeblinksViewWeblinks extends JViewLegacy
 			'filter_language',
 			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
 		);
+
+		JHtmlSidebar::addFilter(
+		JText::_('JOPTION_SELECT_TAG'),
+		'filter_tag',
+		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
+		);
+
 	}
 
 	/**

@@ -377,8 +377,12 @@ class JUser extends JObject
 		// Brute force method: get all published category rows for the component and check each one
 		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)->select('c.id AS id, a.name AS asset_name')->from('#__categories AS c')
-			->innerJoin('#__assets AS a ON c.asset_id = a.id')->where('c.extension = ' . $db->quote($component))->where('c.published = 1');
+		$query = $db->getQuery(true)
+			->select('c.id AS id, a.name AS asset_name')
+			->from('#__categories AS c')
+			->join('INNER', '#__assets AS a ON c.asset_id = a.id')
+			->where('c.extension = ' . $db->quote($component))
+			->where('c.published = 1');
 		$db->setQuery($query);
 		$allCategories = $db->loadObjectList('id');
 		$allowedCategories = array();
@@ -460,7 +464,7 @@ class JUser extends JObject
 	 * @return  object   The user parameters object.
 	 *
 	 * @since   11.1
-	 * @deprecated  12.3  Instead use JUser::getParam()
+	 * @deprecated  12.3 (Platform) & 4.0 (CMS) - Instead use JUser::getParam()
 	 */
 	public function getParameters()
 	{
@@ -602,8 +606,6 @@ class JUser extends JObject
 
 		if (array_key_exists('params', $array))
 		{
-			$params = '';
-
 			$this->_params->loadArray($array['params']);
 
 			if (is_array($array['params']))
@@ -779,7 +781,6 @@ class JUser extends JObject
 		// Create the user table object
 		$table = $this->getTable();
 
-		$result = false;
 		if (!$result = $table->delete($this->id))
 		{
 			$this->setError($table->getError());

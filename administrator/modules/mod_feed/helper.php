@@ -18,41 +18,37 @@ defined('_JEXEC') or die;
  */
 class ModFeedHelper
 {
+	/**
+	 * Method to load a feed.
+	 *
+	 * @param   JRegisty  $params  The parameters object.
+	 *
+	 * @return  JFeedReader|string  Return a JFeedReader object or a string message if error.
+	 */
 	static function getFeed($params)
 	{
-		// module params
-		$rssurl	= $params->get('rssurl', '');
+		// Module params
+		$rssurl = $params->get('rssurl', '');
 
-		// get RSS parsed object
-		$cache_time = 0;
-		if ($params->get('cache'))
-		{
-			$cache_time  = $params->get('cache_time', 15) * 60;
-		}
-
+		// Get RSS parsed object
 		try
 		{
 			jimport('joomla.feed.factory');
-			$feed = new JFeedFactory;
+			$feed   = new JFeedFactory;
 			$rssDoc = $feed->getFeed($rssurl);
 		}
 		catch (InvalidArgumentException $e)
 		{
-			$msg = JText::_('MOD_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
+			return JText::_('MOD_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
 		}
 		catch (RunTimeException $e)
 		{
-			$msg = JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
 		if (empty($rssDoc))
 		{
-			$msg = JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
-			return $msg;
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
-		$lists = array();
-		if ($rssDoc)
-		{
-			return $rssDoc;
-		}
+		return $rssDoc;
 	}
 }

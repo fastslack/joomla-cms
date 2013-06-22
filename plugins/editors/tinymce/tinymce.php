@@ -86,12 +86,11 @@ class PlgEditorTinymce extends JPlugin
 		/*
 		 * Lets get the default template for the site application
 		 */
-		$db		= JFactory::getDBO();
-		$query	= $db->getQuery(true);
-
-		$query->select('template');
-		$query->from('#__template_styles');
-		$query->where('client_id=0 AND home=' . $db->quote('1'));
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true)
+			->select('template')
+			->from('#__template_styles')
+			->where('client_id=0 AND home=' . $db->quote('1'));
 
 		$db->setQuery($query);
 		$template = $db->loadResult();
@@ -129,8 +128,6 @@ class PlgEditorTinymce extends JPlugin
 				// if no editor.css file in templates folder, check system template folder
 				if (!file_exists($templates_path . '/' . $template . '/css/editor.css'))
 				{
-					$template = 'system';
-
 					// if no editor.css file in system folder, show alert
 					if (!file_exists($templates_path . '/system/css/editor.css'))
 					{
@@ -184,7 +181,6 @@ class PlgEditorTinymce extends JPlugin
 		$html_width			= $this->params->def('html_width', '750');
 		$resizing			= $this->params->def('resizing', 'true');
 		$resize_horizontal	= $this->params->def('resize_horizontal', 'false');
-		$element_path = '';
 
 		if ($this->params->get('element_path', 1))
 		{
@@ -779,11 +775,12 @@ class PlgEditorTinymce extends JPlugin
 				 */
 				if ( $button->get('name') )
 				{
-					$modal		= ($button->get('modal')) ? ' class="modal-button btn"' : null;
-					$href		= ($button->get('link')) ? ' class="btn" href="'.JURI::base().$button->get('link').'"' : null;
-					$onclick	= ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$class		= ($button->get('class')) ? $button->get('class') : null;
+					$class		.= ($button->get('modal')) ? ' modal-button' : null;
+					$href		= ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
+					$onclick	= ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : ' onclick="IeCursorFix(); return false;"';
 					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
-					$return .= '<a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
+					$return .= '<a class="' . $class . '" title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
 						. '"><i class="icon-' . $button->get('name'). '"></i> ' . $button->get('text') . "</a>\n";
 				}
 			}

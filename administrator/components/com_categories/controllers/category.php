@@ -181,8 +181,6 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
-		$task = $this->getTask();
-
 		$item = $model->getItem();
 
 		if (isset($item->params) && is_array($item->params))
@@ -196,23 +194,6 @@ class CategoriesControllerCategory extends JControllerForm
 			$registry = new JRegistry;
 			$registry->loadArray($item->metadata);
 			$item->metadata = (string) $registry;
-		}
-		$id = $item->id;
-
-		if (empty($validData['tags']) && !empty($item->tags))
-		{
-			$oldTags = new JTags;
-			$oldTags->unTagItem($id, $item->extension . '.category');
-			return;
-		}
-
-		$tags = $validData['tags'];
-
-		if ($tags[0] != '')
-		{
-			$isNew = $item->id == 0 ? 1 : 0;
-			$tagsHelper = new JTags;
-			$tagsHelper->tagItem($id, $item->extension . '.category', $isNew, $item, $tags, null);
 		}
 
 		return;

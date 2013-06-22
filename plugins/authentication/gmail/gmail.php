@@ -31,7 +31,6 @@ class PlgAuthenticationGMail extends JPlugin
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		$message = '';
 		$success = 0;
 
 		// check if we have curl or not
@@ -47,6 +46,7 @@ class PlgAuthenticationGMail extends JPlugin
 				{
 					$suffix = $this->params->get('suffix', '');
 					$applysuffix = $this->params->get('applysuffix', 0);
+					$offset = strpos($credentials['username'], '@');
 
 					// check if we want to do suffix stuff, typically for Google Apps for Your Domain
 					if ($suffix && $applysuffix)
@@ -73,7 +73,7 @@ class PlgAuthenticationGMail extends JPlugin
 					//curl_setopt($curl, CURLOPT_HEADER, 1);
 					curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 					curl_setopt($curl, CURLOPT_USERPWD, $credentials['username'].':'.$credentials['password']);
-					$result = curl_exec($curl);
+					curl_exec($curl);
 					$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 					switch ($code)
