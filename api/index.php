@@ -23,6 +23,12 @@
  * RewriteRule .* api/index.php [L]
  * #
  */
+/**
+ * Constant that is checked in included files to prevent direct access.
+ * define() is used in the installation folder rather than "const" to not error for PHP 5.2 and lower
+ */
+define('_JEXEC', 1);
+
 error_reporting(-1);
 ini_set('display_errors', 1);
 
@@ -63,6 +69,10 @@ if (!defined('JPATH_API'))
 {
 	define('JPATH_API', $JAPIHOME . '/api');
 }
+if (!defined('JPATH_PLUGINS'))
+{
+	define('JPATH_PLUGINS', $JAPIHOME . '/plugins');
+}
 
 try
 {
@@ -80,8 +90,8 @@ try
 
 	// Execute the application.
 	$application->loadSession()
-		->loadConfiguration($application->fetchApiConfigurationData())
 		->loadDatabase()
+		->loadDispatcher()
 		->fetchStandardMaps()
 		->loadRouter()
 		->execute();
