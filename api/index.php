@@ -37,11 +37,13 @@ $JAPIHOME = getenv('JAPI_HOME') ? getenv('JAPI_HOME') : dirname(__DIR__);
 
 // Look for the Joomla Platform.
 $JPLATFORMHOME = getenv('JPLATFORM_HOME') ? getenv('JPLATFORM_HOME') : dirname(__DIR__) . '/libraries';
+define('JPATH_PLATFORM', $JPLATFORMHOME);
+define('JPATH_LIBRARIES', $JPLATFORMHOME);
 
 // Fire up the Platform importer.
-if (file_exists($JPLATFORMHOME . '/import.php'))
+if (file_exists( JPATH_LIBRARIES . '/import.php'))
 {
-	require $JPLATFORMHOME . '/import.php';
+	require JPATH_LIBRARIES . '/import.php';
 }
 
 // Ensure that required path constants are defined.
