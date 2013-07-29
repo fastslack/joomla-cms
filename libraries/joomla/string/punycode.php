@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::register('idna_convert', JPATH_ROOT . '/libraries/idna_convert_080/idna_convert.class.php');
+JLoader::register('idna_convert', JPATH_ROOT . '/libraries/idna_convert/idna_convert.class.php');
 
 /**
  * Joomla Platform String Punycode Class
@@ -60,15 +60,22 @@ abstract class JStringPunycode
 	/**
 	 * Transforms a UTF-8 URL to a Punycode URL
 	 *
-	 * @param  string  $uri  The UTF-8 URL to transform
+	 * @param   string  $uri  The UTF-8 URL to transform
 	 *
 	 * @return  string  The punycode URL
 	 *
-	 * @since  3.1.2
+	 * @since   3.1.2
 	 */
 	public static function urlToPunycode($uri)
 	{
 		$parsed = JString::parse_url($uri);
+
+		if (!isset($parsed['host']) || $parsed['host'] == '')
+		{
+			// If there is no host we do not need to convert it.
+			return;
+		}
+
 		$host = $parsed['host'];
 		$hostExploded = explode('.', $host);
 		$newhost = '';
@@ -123,6 +130,13 @@ abstract class JStringPunycode
 		}
 
 		$parsed = JString::parse_url($uri);
+
+		if (!isset($parsed['host']) || $parsed['host'] == '')
+		{
+			// If there is no host we do not need to convert it.
+			return $uri;
+		}
+
 		$host = $parsed['host'];
 		$hostExploded = explode('.', $host);
 		$newhost = '';
