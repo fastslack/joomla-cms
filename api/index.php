@@ -93,6 +93,7 @@ try
 	// Execute the application.
 	$application->loadSession()
 		->loadDatabase()
+		->loadIdentity()
 		->loadDispatcher()
 		->fetchStandardMaps()
 		->loadRouter()
