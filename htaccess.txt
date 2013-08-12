@@ -53,7 +53,7 @@ RewriteRule .* index.php [F]
 # Update Your Joomla! Directory (just / for root).
 ##
 
-# RewriteBase /
+#RewriteBase /j3-rest-api
 
 ## Begin - Joomla! core SEF Section.
 #
@@ -61,16 +61,25 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 #
 # If the requested path and file is not /index.php and the request
 # has not already been internally rewritten to the index.php script
-RewriteCond %{REQUEST_URI} !^/index\.php
+#RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for something within the component folder,
 # or for the site root, or for an extensionless URL, or the
 # requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
+#RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
 # and the requested path and file doesn't directly match a physical folder
 RewriteCond %{REQUEST_FILENAME} !-d
 # internally rewrite the request to the index.php script
-RewriteRule .* index.php [L]
+#RewriteRule .* index.php [L]
 #
+
+# If the requested path and file is not /index.php and the request
+# has not already been internally rewritten to the index.php script
+# and the request is for something within the api folder
+RewriteCond %{REQUEST_URI} /api/ [NC]
+# internally rewrite the request to the API index.php script
+RewriteRule .* api/index.php [L]
+
+
 ## End - Joomla! core SEF Section.
