@@ -26,7 +26,7 @@ class JOauth2TableCredentials extends JTable
 	 */
 	public function __construct($db)
 	{
-		parent::__construct('#__oauth_credentials', 'credentials_id', $db);
+		parent::__construct('#__webservices_credentials', 'credentials_id', $db);
 	}
 
 	/**
@@ -40,7 +40,7 @@ class JOauth2TableCredentials extends JTable
 	{
 		// Build the query to delete the rows from the database.
 		$query = $this->_db->getQuery(true);
-		$query->delete('#__oauth_credentials')
+		$query->delete('#__services_credentials')
 			->where(array('expiration_date < ' . time(), 'expiration_date > 0'), 'AND')
 			->where(array('temporary_expiration_date < ' . time(), 'temporary_expiration_date > 0'), 'AND');
 
@@ -64,7 +64,7 @@ class JOauth2TableCredentials extends JTable
 		// Build the query to load the row from the database.
 		$query = $this->_db->getQuery(true);
 		$query->select('*')
-		->from('#__oauth_credentials')
+		->from('#__webservices_credentials')
 		->where($this->_db->quoteName('client_secret') . ' = ' . $this->_db->quote($key))
 		->where($this->_db->quoteName('resource_uri') . ' = ' . $this->_db->quote($uri));
 
@@ -91,7 +91,7 @@ class JOauth2TableCredentials extends JTable
 		// Build the query to load the row from the database.
 		$query = $this->_db->getQuery(true);
 		$query->select('*')
-		->from('#__oauth_credentials')
+		->from('#__webservices_credentials')
 		->where($this->_db->quoteName('access_token') . ' = ' . $this->_db->quote($key))
 		->where($this->_db->quoteName('resource_uri') . ' = ' . $this->_db->quote($uri));
 

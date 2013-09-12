@@ -42,7 +42,7 @@ class JOauth2Client
 	 */
 	public function __construct(JOauth2TableUsers $table = null, array $properties = null)
 	{
-		JTable::addIncludePath(JPATH_REDRAD . '/oauth2/table');
+		JTable::addIncludePath(JPATH_LIBRARIES . '/oauth2/table');
 
 		// Setup the table object.
 		$this->_table = $table ? $table : JTable::getInstance('Users', 'JOauth2Table');

@@ -84,6 +84,7 @@ class JOauth2CredentialsStateNew extends JOauth2CredentialsState
 		$this->table->callback_url = $callbackUrl;
 		$this->table->client_id = $clientId;
 		$this->table->client_secret = $clientSecret;
+		$this->table->client_ip = $_SERVER['REMOTE_ADDR'];
 		$this->table->temporary_token = $this->randomKey();
 		$this->table->resource_uri = $callbackUrl;
 		$this->table->type = JOauth2Credentials::TEMPORARY;
