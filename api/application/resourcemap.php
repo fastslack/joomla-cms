@@ -186,7 +186,7 @@ class ApiApplicationResourcemap
 		// Look for an optional field separator in name.
 		// The dot separator indicates that the prefix is a json-encoded
 		// field, each element of which can be addressed by the suffix.
-		if (strpos($fieldName, '.') !== false)
+		if ((strpos($fieldName, '.') !== false) && $data !== null)
 		{
 			// Extract the field names.
 			list($context, $fieldName) = explode('.', $fieldName);
