@@ -35,4 +35,39 @@ class ComponentContentArticlesListGet extends ApiControllerList
 		$this->setOptions($serviceOptions);
 	}
 
+	/**
+	 * Get database query.
+	 *
+	 * May be overridden in child classes.
+	 *
+	 * @param  string  $table  Primary table name.
+	 *
+	 * @return JDatabaseDriver object.
+	 */
+	public function getQuery($table)
+	{
+		// Get the user
+		$user = $this->app->getIdentity();
+
+		// Get the base query.
+		$query = parent::getQuery($table);
+
+		if ($this->catid)
+		{
+			$query->where($this->db->qn('catid') . ' = ' . (int) $this->catid);
+		}
+
+		// Filter by access level.
+		if ($user->guest != 1)
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('access IN (' . $groups . ')');
+		}
+		else if ($user->guest == 1)
+		{
+			$query->where('access = 1');
+		}
+
+		return $query;
+	}
 }
