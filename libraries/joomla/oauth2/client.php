@@ -7,8 +7,12 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+<<<<<<< HEAD
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.environment.response');
+=======
+defined('JPATH_PLATFORM') or die;
+>>>>>>> upstream/master
 
 /**
  * redRAD class for interacting with an OAuth 2.0 server.
