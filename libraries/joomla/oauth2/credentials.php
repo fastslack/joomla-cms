@@ -293,11 +293,16 @@ class JOauth2Credentials
 			// Get the correct client secret key
 			$key = $this->_signer->secretDecode($this->_request->client_secret);
 
-			$this->_table->loadBySecretKey($key, $this->_request->_fetchRequestUrl());
+			$load = $this->_table->loadBySecretKey($key, $this->_request->_fetchRequestUrl());
 		}
 		elseif (isset($this->_request->access_token))
 		{
-			$this->_table->loadByAccessToken($this->_request->access_token, $this->_request->_fetchRequestUrl());
+			$load = $this->_table->loadByAccessToken($this->_request->access_token, $this->_request->_fetchRequestUrl());
+		}
+
+		if ($load === false)
+		{
+			throw new InvalidArgumentException('OAuth credentials not found.');
 		}
 
 		// If nothing was found we will setup a new credential state object.

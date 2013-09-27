@@ -72,8 +72,18 @@ class JOauth2TableCredentials extends JTable
 		$this->_db->setQuery($query);
 		$properties = $this->_db->loadAssoc();
 
+		if (!is_array($properties))
+			return false; 
+
 		// Bind the result to the object
-		$this->bind($properties);
+		if ($this->bind($properties))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -99,7 +109,17 @@ class JOauth2TableCredentials extends JTable
 		$this->_db->setQuery($query);
 		$properties = $this->_db->loadAssoc();
 
+		if (!is_array($properties))
+			return false; 
+
 		// Bind the result to the object
-		$this->bind($properties);
+		if ($this->bind($properties))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
