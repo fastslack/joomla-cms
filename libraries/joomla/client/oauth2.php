@@ -304,13 +304,15 @@ class JClientOauth2
 	 * @since 	1.0
 	 * @throws	Exception
 	 */
-	public function getResource($token)
+	public function getResource($token, $client_id = null)
 	{
 		// Get the headers
 		$data = $this->getPostData();
 
+		$client_id = isset($client_id) ? $client_id : $data['oauth_client_id'];
+
 		// Add GET parameters to URL
-		$url = $this->options->get('url') . "?oauth_access_token={$token}&oauth_client_id={$data['oauth_client_id']}";
+		$url = $this->options->get('url') . "?oauth_access_token={$token}&oauth_client_id={$client_id}";
 
 		// Send the request
 		$response = $this->http->get($url, $this->getRestHeaders());
