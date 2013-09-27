@@ -62,6 +62,8 @@ class ApiDocumentHalJson extends JDocument
 	 */
 	public function render($cache = false, $params = array())
 	{
+		jimport('legacy.response.response');
+
 		JResponse::allowCache($cache);
 		JResponse::setHeader('Content-disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
 
