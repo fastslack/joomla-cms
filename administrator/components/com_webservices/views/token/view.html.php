@@ -90,38 +90,4 @@ class WebservicesViewToken extends JViewLegacy
 		}
 	}
 
-	/**
-	 * Get the toolbar to render.
-	 *
-	 * @return  RToolbar
-	 *
-	public function getToolbar()
-	{
-		$group = new RToolbarButtonGroup;
-
-		$user = JFactory::getUser();
-
-		if ($user->authorise('core.admin', 'com_webservices.panel'))
-		{
-			$request = new RToolbarButtonStandard('COM_WEBSERVICES_TOKEN_BUTTON_REQUEST', 'token.save', '', 'icon-save', false);
-			$group->addButton($request);
-		}
-
-		if (empty($this->item->id))
-		{
-			$cancel = RToolbarBuilder::createCancelButton('token.cancel');
-		}
-
-		else
-		{
-			$cancel = RToolbarBuilder::createCloseButton('token.cancel');
-		}
-
-		$group->addButton($cancel);
-
-		$toolbar = new RToolbar;
-		$toolbar->addGroup($group);
-
-		return $toolbar;
-	}*/
 }
