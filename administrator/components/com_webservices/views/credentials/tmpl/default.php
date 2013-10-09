@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die;
 
-//JHtml::_('rbootstrap.tooltip');
-//JHtml::_('rjquery.chosen', 'select');
-
 $doc = JFactory::getDocument();
 
 $user = JFactory::getUser();

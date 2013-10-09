@@ -51,3 +51,10 @@ input[type="text"] + .minibutton {
     background: none repeat scroll 0 0 rgba(65, 131, 196, 0.4);
     text-shadow: none;
 }
+
+.jsbox {
+	border: 2px dotted #ccc; 
+	font-size: 14pt; 
+	padding: 20px;
+}
+
