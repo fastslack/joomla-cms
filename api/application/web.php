@@ -190,6 +190,10 @@ class ApiApplicationWeb extends JApplicationWeb
 	{
 		$this->dispatcher = ($dispatcher === null) ? JEventDispatcher::getInstance() : $dispatcher;
 
+		// Load the JPluginHelper class
+		JLoader::register('JPlugin', JPATH_PLATFORM . '/cms/plugin/plugin.php');
+		JLoader::register('JPluginHelper', JPATH_PLATFORM . '/cms/plugin/helper.php');
+
 		// Trigger the authentication plugins.
 		JPluginHelper::importPlugin('authentication');
 
