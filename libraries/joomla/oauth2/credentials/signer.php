@@ -102,31 +102,47 @@ class JOauth2CredentialsSigner
 			exit;
 		}
 
-		// Explode the user
-		$parts	= explode(':', $user_decode);
-		$user	= $parts[0];
+		// Check the identity
+		$match = false;
 
-		// Explode the password
-		$parts	= explode(':', $password_decode);
-		$password_clean	= $parts[0];
-
-		// Check the password
-		$parts	= explode(':', $client->_identity->password);
-		$crypt	= $parts[0];
-
-		// Get the salt
-		$salt	= @$parts[1];
-
-		// Crypt the user password
-		$testcrypt = JUserHelper::getCryptedPassword($password_clean, $salt);
-
-		// Compare the password's
-		if ($crypt != $testcrypt)
+		if (substr($client->_identity->password, 0, 4) == '$2y$')
 		{
-			throw new Exception('Username or password do not match');
-			exit;
+			// BCrypt passwords are always 60 characters, but it is possible that salt is appended although non standard.
+			$password60 = substr($client->_identity->password, 0, 60);
+
+			if (JCrypt::hasStrongPasswordSupport())
+			{
+				$match = password_verify($password_decode, $password60);
+			}
+		}
+		elseif (substr($client->_identity->password, 0, 8) == '{SHA256}')
+		{
+			// Check the password
+			$parts	= explode(':', $client->_identity->password);
+			$crypt	= $parts[0];
+			$salt	= @$parts[1];
+			$testcrypt = JUserHelper::getCryptedPassword($password_decode, $salt, 'sha256', false);
+
+			if ($crypt == $testcrypt)
+			{
+				$match = true;
+			}
+		}
+		else
+		{
+			// Check the password
+			$parts	= explode(':', $client->_identity->password);
+			$crypt	= $parts[0];
+			$salt	= @$parts[1];
+
+			$testcrypt = JUserHelper::getCryptedPassword($password_decode, $salt, 'md5-hex', false);
+
+			if ($crypt == $testcrypt)
+			{
+				$match = true;
+			}
 		}
 
-		return true;
+		return $match;
 	}
 }
