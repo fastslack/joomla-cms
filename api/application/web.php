@@ -39,22 +39,12 @@ class ApiApplicationWeb extends JApplicationWeb
 	protected $maps = array();
 
 	/**
-<<<<<<< HEAD
 	 * The client id
 	 *
 	 * @var    int
 	 * @since  3.2
 	 */
 	private $_clientId;
-=======
-	 * The client identifier.
-	 *
-	 * @var    integer
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $clientId
-	 */
-	protected $_clientId = null;
->>>>>>> 873632faa32ad953fd730acc17e6228f92916d1b
 
 	/**
 	 * The start time for measuring the execution time.
