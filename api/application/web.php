@@ -83,19 +83,6 @@ class ApiApplicationWeb extends JApplicationWeb
 	}
 
 	/**
-	 * Gets the client id of the current running application.
-	 *
-	 * @return  integer  A client identifier.
-	 *
-	 * @since   11.1
-	 * @deprecated  4.0
-	 */
-	public function getClientId()
-	{
-		return $this->_clientId;
-	}
-
-	/**
 	 * Permits retrieval of the database connection for this application.
 	 *
 	 * @return  JDatabaseDriver  The database driver.
