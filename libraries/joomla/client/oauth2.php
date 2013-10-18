@@ -180,7 +180,7 @@ class JClientOauth2
 
 		// Send the request
 		$response = $this->http->post($this->options->get('url'), $data, $this->getRestHeaders(true));
-
+print_r($response);
 		// Process the response
 		$token = $this->processRequest($response);
 

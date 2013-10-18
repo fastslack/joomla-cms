@@ -61,11 +61,16 @@ jQuery(document).ready(function ($){
 							xhr.setRequestHeader('Authorization', 'Bearer ' + base64);
 			};
 
+			//console.log(postData);
+
 			//
 			// Request the temporary token
 			//
 			$.ajax({ 	type: "POST",	url: $('#url').val(),	dataType : 'jsonp',	data: postData,	beforeSend : beforeSendData,
 				complete: function(response) {
+					console.log(response);
+					console.log(response);
+
 					// Decode the JSON response
 					returnRequest = JSON.decode(response.responseText);
 

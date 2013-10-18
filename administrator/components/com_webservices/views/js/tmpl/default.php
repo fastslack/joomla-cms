@@ -28,11 +28,11 @@ JFactory::getDocument()->addScriptDeclaration(file_get_contents('components/com_
 	<div class="span12">
 
 		URL:<br />
-		<input type="text" class="inputbox span6" id="url" name="url" value="<?php echo JURI::root();?>api/joomla:articles"><br /><br />
+		<input type="text" class="inputbox span6" id="url" name="url" value="http://wellmets.com/api/mets:patients"><br /><br />
 		Username:<br />
-		<input type="text" class="inputbox span6" id="oauth_client_id" name="oauth_client_id" value="anonymous"><br /><br />
+		<input type="text" class="inputbox span6" id="oauth_client_id" name="oauth_client_id" value="admin"><br /><br />
 		Password:<br />
-		<input type="text" class="inputbox span6" id="oauth_client_secret" name="oauth_client_secret" value=""><br /><br />
+		<input type="text" class="inputbox span6" id="oauth_client_secret" name="oauth_client_secret" value="123456"><br /><br />
 
 		<button id="ajax-button" name="ajax-button">Authorize</button><br /><br />
 
