@@ -39,6 +39,14 @@ class ApiApplicationWeb extends JApplicationWeb
 	protected $maps = array();
 
 	/**
+	 * The client id
+	 *
+	 * @var    int
+	 * @since  3.2
+	 */
+	private $_clientId;
+
+	/**
 	 * The start time for measuring the execution time.
 	 *
 	 * @var    float
@@ -72,6 +80,19 @@ class ApiApplicationWeb extends JApplicationWeb
 
 		// By default, assume response may be cached.
 		$this->allowCache(true);
+	}
+
+	/**
+	 * Gets the client id of the current running application.
+	 *
+	 * @return  integer  A client identifier.
+	 *
+	 * @since   11.1
+	 * @deprecated  4.0
+	 */
+	public function getClientId()
+	{
+		return $this->_clientId;
 	}
 
 	/**
