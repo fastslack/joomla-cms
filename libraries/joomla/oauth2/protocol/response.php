@@ -101,6 +101,7 @@ class JOauth2ProtocolResponse
 		$this->setHeader('X-Powered-By', 'JoomlaWebAPI/1.0', true);
 		// Enable CORS (Cross-origin resource sharing)
 		$this->setHeader('Access-Control-Allow-Origin', '*', true);
+		$this->setHeader('Access-Control-Allow-Headers', 'Authorization');
 
 		$this->sendHeaders();
 
