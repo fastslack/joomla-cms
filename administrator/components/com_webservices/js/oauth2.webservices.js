@@ -66,8 +66,9 @@ jQuery(document).ready(function ($){
 			//
 			$.ajax({ 	type: "POST",	url: $('#url').val(),	dataType : 'jsonp',	data: postData,	beforeSend : beforeSendData,
 				complete: function(response) {
+
 					// Decode the JSON response
-					returnRequest = JSON.decode(response.responseText);
+					returnRequest = response.responseJSON;
 
 					// Add new values to new ajax request
 					postData.oauth_code = returnRequest.oauth_code;
@@ -78,8 +79,9 @@ jQuery(document).ready(function ($){
 					//
 					$.ajax({ 	type: "POST",	url: $('#url').val(), dataType : 'jsonp',	data: postData,	beforeSend : beforeSendData,
 						complete: function(response) {
+
 							// Decode the JSON response
-							returnRequest = JSON.decode(response.responseText);
+							returnRequest = response.responseJSON;
 
 							// Add new values to new ajax request
 							postData.oauth_code = returnRequest.oauth_code;
@@ -90,8 +92,13 @@ jQuery(document).ready(function ($){
 							//
 							$.ajax({ 	type: "POST",	url: $('#url').val(), dataType : 'jsonp',	data: postData,	beforeSend : beforeSendData,
 								complete: function(response) {
+
+									var html = '<b>Access Token:</b>'+response.responseJSON.access_token;
+									html = html + '<br><b>Expires In:</b>'+response.responseJSON.expires_in;
+									html = html + '<br><b>Refresh Token:</b>'+response.responseJSON.refresh_token;
+
 									// Set the access token reponse to HTML
-									$('#returnDiv').html(response.responseText);
+									$('#returnDiv').html(html);
 								}
 							}); // end ajax
 						}
