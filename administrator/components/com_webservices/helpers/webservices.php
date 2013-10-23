@@ -70,5 +70,10 @@ class WebservicesHelper
 			'index.php?option=com_webservices&view=tokens',
 			$vName == 'tokens'
 		);
+		JHtmlSidebar::addEntry(
+			JText::_('COM_WEBSERVICES_JS_LIST_TITLE'),
+			'index.php?option=com_webservices&view=js',
+			$vName == 'js'
+		);
 	}
 }

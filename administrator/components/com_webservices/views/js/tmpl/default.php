@@ -23,6 +23,14 @@ JFactory::getDocument()->addScriptDeclaration(file_get_contents('components/com_
 
 ?>
 <form action="<?php echo $action; ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
 
 	<!-- Begin Content -->
 	<div class="span12">
@@ -32,15 +40,15 @@ JFactory::getDocument()->addScriptDeclaration(file_get_contents('components/com_
 		Username:<br />
 		<input type="text" class="inputbox span6" id="oauth_client_id" name="oauth_client_id" value="anonymous"><br /><br />
 		Password:<br />
-		<input type="text" class="inputbox span6" id="oauth_client_secret" name="oauth_client_secret" value=""><br /><br />
+		<input type="password" class="inputbox span6" id="oauth_client_secret" name="oauth_client_secret" value=""><br /><br />
 
-		<button id="ajax-button" name="ajax-button">Authorize</button><br /><br />
+		<button id="authorise" name="authorise">Authorise</button><button id="resource" name="resource">Get resource</button><br /><br />
 
 		<div id="returnDiv" name="returnDiv" class="span10 jsbox"></div>
 
 		<!-- hidden fields -->
-	  	<input type="hidden" name="option"	value="com_webservices">
-	  	<input type="hidden" name="id"	value="<?php echo $this->item->tokens_id; ?>">
+	  	<input type="hidden" name="option"	 value="com_webservices">
+			<input type="hidden" id="tmp_token" name="tmp_token" value="">
 	  	<input type="hidden" name="task" value="">
 	  	<input type="hidden" name="boxchecked" value="">
 		<?php echo JHTML::_('form.token'); ?>

@@ -37,10 +37,12 @@ class WebservicesViewJs extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		//$this->form	= $this->get('Form');
-		//$this->item	= $this->get('Item');
+		require_once JPATH_COMPONENT.'/helpers/webservices.php';
+		WebservicesHelper::addSubmenu('webservices');
 
-		//$this->addToolbar();
+		$this->addToolbar();
+
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Display the template
 		parent::display($tpl);
@@ -63,31 +65,14 @@ class WebservicesViewJs extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT.'/helpers/webservices.php';
-
-		$state	= $this->get('State');
-		$canDo	= WebservicesHelper::getActions($state->get('filter.category_id'));
-		$user	= JFactory::getUser();
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_WEBSERVICES_MANAGER_TOKEN'), 'webservices.png');
+		JToolbarHelper::title(JText::_('COM_WEBSERVICES_MANAGER_JS'), 'webservices.png');
 
-		// If not checked out, can save the item.
-		if (($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_webservices', 'core.create')))))
-		{
-			JToolbarHelper::apply('js.apply');
-			JToolbarHelper::save('js.save');
-		}
+		JToolbarHelper::preferences('com_webservices');
 
-		if (empty($this->item->id))
-		{
-			JToolbarHelper::cancel('js.cancel');
-		}
-		else
-		{
-			JToolbarHelper::cancel('js.cancel', 'JTOOLBAR_CLOSE');
-		}
+		JToolbarHelper::help('JHELP_COMPONENTS_WEBSERVICES_LINKS');
 	}
 
 }

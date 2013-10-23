@@ -1,5 +1,8 @@
 jQuery(document).ready(function ($){
 
+	// Hide resource button
+	$('#resource').hide();
+
 	// Extend jQuery to add random string generator
 	$.extend({ 
 		randomKey: function (length, special) {
@@ -48,9 +51,9 @@ jQuery(document).ready(function ($){
 		}
 	});
 
-	// Declare Ajax Object
+	// Declare Authorization Object
 	$.extend({ 
-		doAjax: function () {
+		doAuthorise: function () {
 
 			// Fetch the post data
 			var postData = $.fetchPostData();
@@ -93,6 +96,9 @@ jQuery(document).ready(function ($){
 							$.ajax({ 	type: "POST",	url: $('#url').val(), dataType : 'jsonp',	data: postData,	beforeSend : beforeSendData,
 								complete: function(response) {
 
+									// Hide resource button
+									$('#resource').show();
+
 									var html = '<b>Access Token:</b>'+response.responseJSON.access_token;
 									html = html + '<br><b>Expires In:</b>'+response.responseJSON.expires_in;
 									html = html + '<br><b>Refresh Token:</b>'+response.responseJSON.refresh_token;
@@ -111,12 +117,52 @@ jQuery(document).ready(function ($){
 
 	});
 
+	// Declare Resource Object
+	$.extend({ 
+		getResource: function () {
+
+			// Get the values from html input's
+			var username = $('#oauth_client_id').val();
+			var client_id = Base64.encode(username);
+
+			// Define the beforeSend function
+			var beforeSendData = function(xhr) {
+							xhr.setRequestHeader('Authorization', 'Bearer ' + client_id);
+			};
+
+			//
+			// Request the resource
+			//
+			$.ajax({ 	type: "GET", 	url: $('#url').val(),	dataType : 'jsonp',	beforeSend : beforeSendData,
+				complete: function(response) {
+
+					var json_html = $('#returnDiv').html();
+					$('#returnDiv').html(json_html+'<br><br>'+response.responseJSON);
+
+				}
+			}); // end ajax
+		}
+
+	});
+
 	// Add onclick event to request the token
-	document.id('ajax-button').addEvent('click', function(e) {
+	document.id('authorise').addEvent('click', function(e) {
 		// Prevent the propagation
 		e.stopPropagation();
 		e.preventDefault();
+
 		// Run the OAuth2 access token request
-		$.doAjax();
+		$.doAuthorise();
 	});
+
+	// Add onclick event to request the token
+	document.id('resource').addEvent('click', function(e) {
+		// Prevent the propagation
+		e.stopPropagation();
+		e.preventDefault();
+
+		// Run the resource function
+		$.getResource();
+	});
+
 });
