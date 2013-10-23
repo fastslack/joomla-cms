@@ -89,6 +89,30 @@ class JOauth2ControllerBase extends JControllerBase
 	}
 
 	/**
+	 * Return the JSON message for CORS or simple request.
+	 *
+	 * @param   string	$message	The return message
+	 *
+	 * @return  string	$body	    The message prepared if CORS is enabled, or same if false.
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 */
+	public function prepareBody($message)
+	{
+		$callback = $this->app->input->get->getString('callback', false);
+
+		if ($callback !== false)
+		{
+			$body = $callback . "(".json_encode($message).")";
+		}else{
+			$body = json_encode($message);
+		}
+
+		return $body;
+	}
+
+	/**
 	 * Return the JSON error based on RFC 6749 (http://tools.ietf.org/html/rfc6749#section-5.2)
 	 *
 	 * @param   int     $status   The HTTP protocol status. Default: 400 for errors

@@ -85,9 +85,12 @@ class JOauth2ControllerConvert extends JOauth2ControllerBase
 			'refresh_token' => $credentials->getRefreshToken()
 		);
 
+		// Check if the request is CORS ( Cross-origin resource sharing ) and change the body if true
+ 		$body = $this->prepareBody($response);
+
 		// Set the response code and body.
 		$this->response->setHeader('status', '200')
-			->setBody(json_encode($response))
+			->setBody($body)
 			->respond();
 	}
 }
