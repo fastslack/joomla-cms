@@ -397,7 +397,7 @@ class ApiApplicationWeb extends JApplicationWeb
 		$body = $this->getBody();
 
 		// Check if the request is CORS ( Cross-origin resource sharing ) and change the body if true
- 		$body = (string) stripslashes($this->prepareBody($body));
+ 		$body = (string) $this->prepareBody($body);
 
 		$this->setBody($body);
 
@@ -420,9 +420,9 @@ class ApiApplicationWeb extends JApplicationWeb
 
 		if ($callback !== false)
 		{
-			$body = $callback . "(".json_encode($message).")";
+			$body = $callback . "(".$message.")";
 		}else{
-			$body = json_encode($message);
+			$body = $message;
 		}
 
 		return $body;
