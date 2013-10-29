@@ -57,7 +57,10 @@ class JOauth2ControllerInitialise extends JOauth2ControllerBase
 		$client = $this->fetchClient($this->request->client_id);
 
 		// Doing authentication using Joomla! users
-		$credentials->doJoomlaAuthentication($client);
+		if ($credentials->doJoomlaAuthentication($client) == false)
+		{
+			$this->respondError(400, 'unauthorized_client', 'The Joomla! credentials are not valid.');
+		}
 
 		// Load the JUser class on application for this client
 		$this->app->loadIdentity($client->_identity);
