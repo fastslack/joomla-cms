@@ -102,8 +102,8 @@ class JOauth2TableCredentials extends JTable
 		$query = $this->_db->getQuery(true);
 		$query->select('*')
 		->from('#__webservices_credentials')
-		->where($this->_db->quoteName('access_token') . ' = ' . $this->_db->quote($key))
-		->where($this->_db->quoteName('resource_uri') . ' = ' . $this->_db->quote($uri));
+		->where($this->_db->quoteName('access_token') . ' = ' . $this->_db->quote($key));
+		//->where($this->_db->quoteName('resource_uri') . ' = ' . $this->_db->quote($uri));
 
 		// Set and execute the query.
 		$this->_db->setQuery($query);
