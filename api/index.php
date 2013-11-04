@@ -63,6 +63,10 @@ if (!defined('JPATH_ADMINISTRATOR'))
 {
 	define('JPATH_ADMINISTRATOR', $JAPIHOME . '/administrator');
 }
+if (!defined('JPATH_COMPONENTS'))
+{
+	define('JPATH_COMPONENTS', $JAPIHOME . '/components');
+}
 if (!defined('JPATH_CACHE'))
 {
 	define('JPATH_CACHE', '/tmp/cache');

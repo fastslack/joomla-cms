@@ -329,7 +329,80 @@ class ApiApplicationResourcemap
 			return $data;
 		}
 
-		// @TODO
+		// Initialise the object store.
+		$targetData = array();
+		// Initialise the parameters store.
+		$paramsData = array();
+
+		// Run through each mapped field.
+		foreach ($this->map as $halField => $sourceDefinition)
+		{
+			// Get the first character
+			$first = substr($halField, 0, 1);
+
+			// Ignore Api parameters
+			if ($first == "_")
+			{
+				continue;
+			}	
+
+			// Source definition fields must be in the form type:definition.
+			// Locate first occurrence of a colon.
+			$pos = strpos($sourceDefinition, ':');
+
+			// Separate type and definition.
+			$sourceFieldType = substr($sourceDefinition, 0, $pos);
+			$definition = substr($sourceDefinition, $pos+1);
+
+			// Look for source field names.  These are surrounded by curly brackets.
+			preg_match_all('/\{(.*)\}/U', $definition, $matches);
+
+			// If the definition contains field names, substitute their values.
+			if (!empty($matches[0]))
+			{
+				foreach ($matches[1] as $key => $fieldName)
+				{
+
+					if ($first == "/")
+					{
+
+						$fixedHalFieldName = substr($halField, 1, strlen($halField));
+						$targetData[$fieldName] = $data->$fixedHalFieldName;
+
+					} else {
+
+						// Left-hand side (HAL field) must be in the form objectName/name.
+						// Note that objectName is optional; default is "main".
+						list($halFieldPath, $halFieldName) = explode('/', $halField);
+
+						// Look for an optional field separator in name.
+						// The dot separator indicates that the prefix is an object
+						// and the suffix is a property of that object.
+						if (strpos($fieldName, '.') !== false)
+						{
+							// Extract the field names.
+							list($fieldObject, $fieldProperty) = explode('.', $fieldName);
+
+							if (!isset($paramsData[$fieldObject]))
+							{
+								$paramsData[$fieldObject] = new stdClass;
+							}
+
+							$paramsData[$fieldObject]->$fieldProperty = $data->$halFieldPath->$halFieldName;
+
+						}
+					}
+				} // end foreach
+			}
+		} // end foreach
+
+		// Append the parameters fields
+		foreach ($paramsData as $objName => $object)
+		{
+			$targetData[$objName] = json_encode($object);
+		}
+
+		return $targetData;
 	}
 
 	/**

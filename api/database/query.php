@@ -68,6 +68,38 @@ class ApiDatabaseQuery
 	}
 
 	/**
+	 * Post single data record.
+	 *
+	 * Given a base query this method will return the single
+	 * data record with the given value of a unique key.
+	 *
+	 * @param  JDatabaseQuery  $query  A database query object.
+	 * @param  JTable          $table  The table to insert the data
+	 * @param  array           $data   The assoc array data
+	 *
+	 * @return mixed Exception if fail, true if ok.
+	 */
+	public function postItem(JDatabaseQuery $query, $table, $data)
+	{
+		// Bind data to save content
+		if (!$table->bind($data)) {
+			throw new Exception($table->getError());
+		}
+
+		// Check the content
+		//if (!$table->check()) {
+		//	throw new Exception($table->getError());
+		//}
+
+		// Insert the content
+		if (!$table->store()) {
+			throw new Exception($table->getError());
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get page of data.
 	 *
 	 * Given a base query this method will apply current pagination

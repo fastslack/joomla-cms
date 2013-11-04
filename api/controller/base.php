@@ -19,6 +19,11 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 	protected $tableName = '';
 
 	/**
+	 * Primary table name.
+	 */
+	protected $tableClass = '';
+
+	/**
 	 * API query object.
 	 */
 	protected $apiQuery = null;
@@ -162,6 +167,12 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 			$this->tableName = $options['tableName'];
 		}
 
+		// Set table class name name.
+		if (isset($options['tableClass']))
+		{
+			$this->tableClass = $options['tableClass'];
+		}
+
 		// Set the content type.
 		if (isset($options['contentType']))
 		{
@@ -178,4 +189,25 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 
 	}
 
+	/**
+	 * Check if the user is logged
+	 *
+	 * @return http  Error 400 if user if not logged.
+	 */
+	public function checkIdentity()
+	{
+		// Get the user
+		$user = $this->app->getIdentity();
+
+		if ($user->get('guest') == 1) {
+
+			$response = array(
+				'error' => 400,
+				'error_description' => 'You no have the right permission for this resource'
+			);
+
+			echo $this->app->setBody(json_encode($response))->sendHeaders()->getBody();
+			exit;	
+		}
+	}
 }

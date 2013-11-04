@@ -329,6 +329,7 @@ class ApiApplicationWeb extends JApplicationWeb
 			{
 				// Look for services file.
 				$servicesFilename = $basePath . '/' . $fileName . '/services.json';
+
 				if (file_exists($servicesFilename))
 				{
 					$this->loadMaps(json_decode(file_get_contents($servicesFilename), true));
