@@ -107,7 +107,7 @@ class WebservicesModelCredentials extends JModelList
 		$orderList = $this->getState('list.ordering');
 		$directionList = $this->getState('list.direction');
 
-		$order     = !empty($orderList) ? $orderList : 'c.resource_uri';
+		$order     = !empty($orderList) ? $orderList : 'c.credentials_id';
 		$direction = !empty($directionList) ? $directionList : 'DESC';
 		$query->order($db->escape($order) . ' ' . $db->escape($direction));
 

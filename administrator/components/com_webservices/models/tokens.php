@@ -66,7 +66,7 @@ class WebservicesModelTokens extends JModelList
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		parent::populateState('t.resource_uri', 'asc');
+		parent::populateState('t.tokens_id', 'desc');
 	}
 
 	/**
@@ -97,8 +97,8 @@ class WebservicesModelTokens extends JModelList
 		$orderList = $this->getState('list.ordering');
 		$directionList = $this->getState('list.direction');
 
-		$order     = !empty($orderList) ? $orderList : 't.resource_uri';
-		$direction = !empty($directionList) ? $directionList : 'ASC';
+		$order     = !empty($orderList) ? $orderList : 't.tokens_id';
+		$direction = !empty($directionList) ? $directionList : 'DESC';
 		$query->order($db->escape($order) . ' ' . $db->escape($direction));
 
 		return $query;
