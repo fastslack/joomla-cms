@@ -102,46 +102,8 @@ class JOauth2CredentialsSigner
 			exit;
 		}
 
-		// Check the identity
-		$match = false;
-
-		if (substr($client->_identity->password, 0, 4) == '$2y$')
-		{
-			// BCrypt passwords are always 60 characters, but it is possible that salt is appended although non standard.
-			$password60 = substr($client->_identity->password, 0, 60);
-
-			if (JCrypt::hasStrongPasswordSupport())
-			{
-				$match = password_verify($password_decode, $password60);
-			}
-		}
-		elseif (substr($client->_identity->password, 0, 8) == '{SHA256}')
-		{
-			// Check the password
-			$parts	= explode(':', $client->_identity->password);
-			$crypt	= $parts[0];
-			$salt	= @$parts[1];
-			$testcrypt = JUserHelper::getCryptedPassword($password_decode, $salt, 'sha256', false);
-
-			if ($crypt == $testcrypt)
-			{
-				$match = true;
-			}
-		}
-		else
-		{
-			// Check the password
-			$parts	= explode(':', $client->_identity->password);
-			$crypt	= $parts[0];
-			$salt	= @$parts[1];
-
-			$testcrypt = JUserHelper::getCryptedPassword($password_decode, $salt, 'md5-hex', false);
-
-			if ($crypt == $testcrypt)
-			{
-				$match = true;
-			}
-		}
+		// Verify the password
+		$match = JUserHelper::verifyPassword($password_decode, $client->_identity->password, $client->_identity->id);
 
 		return $match;
 	}
