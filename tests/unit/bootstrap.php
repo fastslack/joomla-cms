@@ -70,6 +70,10 @@ if (!defined('JPATH_ADMINISTRATOR'))
 {
 	define('JPATH_ADMINISTRATOR', JPATH_ROOT . '/administrator');
 }
+if (!defined('JPATH_COMPONENTS'))
+{
+	define('JPATH_COMPONENTS', JPATH_ROOT . '/components');
+}
 if (!defined('JPATH_INSTALLATION'))
 {
 	define('JPATH_INSTALLATION', JPATH_ROOT . '/installation');
@@ -85,6 +89,10 @@ if (!defined('JPATH_PLUGINS'))
 if (!defined('JPATH_THEMES'))
 {
 	define('JPATH_THEMES', JPATH_BASE . '/templates');
+}
+if (!defined('JPATH_API'))
+{
+	define('JPATH_API', JPATH_BASE . '/api');
 }
 if (!defined('JDEBUG'))
 {

@@ -50,7 +50,10 @@ class PlgEditorTinymce extends JPlugin
 	{
 		$language = JFactory::getLanguage();
 
-		$mode = (int) $this->params->get('mode', 1);
+		$mode = (int) $this->params->get('mode', 3);
+
+echo "CCCCCCCCCCCCCC  $mode CCCCCCCCCCc";
+
 		$theme	= 'modern';
 		$skin	= $this->params->get('skin', '0');
 
