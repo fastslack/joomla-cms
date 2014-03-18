@@ -19,11 +19,11 @@ $lang = JFactory::getLanguage();
 /*
  * Site Submenu
  */
-$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), '#'), true);
-$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel'));
-
 if ($user->authorise('core.admin'))
 {
+	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), '#'), true);
+	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel'));
+
 	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config'));
 }
@@ -45,9 +45,91 @@ if ($user->authorise('core.admin'))
 {
 	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_admin&view=sysinfo', 'class:info'));
+
+	$menu->getParent();
 }
 
-$menu->getParent();
+/*
+ * Check permissions
+ */
+$metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
+$metsGym = $user->authorise('core.gym', 'com_mets');
+$metsMedic = $user->authorise('core.medic', 'com_mets');
+
+/*
+ * Intranet Submenu
+ */
+
+if ($metsReceptionist || $metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
+	$menu->getParent();
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), '#'), true);
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_MESSAGES'), 'index.php?option=com_messages&view=message&layout=edit', 'class:mets'));
+	//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMAILS'), 'index.php?option=com_mets&view=content&id=1', 'class:mets'));
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_TEL'), 'index.php?option=com_mets&view=content&id=2', 'class:mets'));
+	//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMPLOYEES'), 'index.php?option=com_mets&view=employees', 'class:mets'));
+
+	if ($metsGym || $metsMedic)
+	{
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
+
+		if ($metsGym || $metsMedic)
+		{
+			$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
+		}
+	}
+
+	$menu->getParent();
+
+}
+
+/*
+ * Administracion
+ */
+if ($metsReceptionist || $metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_HEADER'), '#'), true);
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_NEW'), 'index.php?option=com_mets&view=patient&layout=edit', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_LIST'), 'index.php?option=com_mets&view=patients', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_PLANS'), 'index.php?option=com_mets&view=plans', 'class:mets'));
+
+	if ($metsReceptionist) {
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_AGENDA'), 'index.php?option=com_mets&view=content&id=3', 'class:mets'));
+	}
+
+	$menu->getParent();
+}
+
+/*
+ * Atencion
+ */
+
+if ($metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_HEADER'), '#'), true);
+
+	if ($metsMedic)
+	{
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_CLINIC_HISTORY'), 'index.php?option=com_mets&view=patients&tab=medical_record', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_TRAINING'), 'index.php?option=com_mets&view=patients&tab=training', 'class:mets'));
+	}
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_EVALUATIONS'), 'index.php?option=com_mets&view=patients&tab=evaluations', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_PLANNING'), 'index.php?option=com_mets&view=patients&tab=planning', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_TAB_SESSIONS_DETAILS'), 'index.php?option=com_mets&view=patients&tab=sessions', 'class:mets'));
+
+	$menu->getParent();
+}
 
 /*
  * Users Submenu
@@ -233,6 +315,7 @@ if ($user->authorise('core.manage', 'com_content'))
 	$menu->getParent();
 }
 
+
 /*
  * Components Submenu
  */
@@ -240,8 +323,10 @@ if ($user->authorise('core.manage', 'com_content'))
 // Get the authorised components and sub-menus.
 $components = ModMenuHelper::getComponents(true);
 
+$cm = $user->authorise('core.manage', 'com_installer');
+
 // Check if there are any components, otherwise, don't render the menu
-if ($components)
+if ($components && $cm)
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COMPONENTS'), '#'), true);
 

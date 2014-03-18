@@ -11,10 +11,37 @@ defined('_JEXEC') or die;
 
 $showhelp = $params->get('showhelp', 1);
 
+/*
+ * Check permissions
+ */
+$metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
+$metsGym = $user->authorise('core.gym', 'com_mets');
+$metsMedic = $user->authorise('core.medic', 'com_mets');
+
 /**
  * Site SubMenu
 **/
 $menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'disabled'));
+
+/**
+ * Users Submenu
+**/
+if ($metsReceptionist || $metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), null, 'disabled'));
+}
+
+if ($metsReceptionist || $metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_HEADER'), null, 'disabled'));
+}
+
+if ($metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_HEADER'), null, 'disabled'));
+}
+
 
 /**
  * Users Submenu
@@ -47,8 +74,10 @@ if ($user->authorise('core.manage', 'com_content'))
 // Get the authorised components and sub-menus.
 $components = ModMenuHelper::getComponents(true);
 
-// Check if there are any components, otherwise, don't display the components menu item
-if ($components)
+$cm = $user->authorise('core.manage', 'com_installer');
+
+// Check if there are any components, otherwise, don't render the menu
+if ($components && $cm)
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COMPONENTS'), null, 'disabled'));
 }

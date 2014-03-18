@@ -86,7 +86,7 @@ class WebservicesModelJs extends JModelAdmin
 			$options = isset($options) ? $options : new JRegistry($config);
 
 			// Get the OAuth2 client
-			$client = new JClientOauth2($options);
+			$client = new MClientOauth2($options);
 
 			// Fetch the access token
 			try
