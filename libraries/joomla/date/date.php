@@ -285,8 +285,12 @@ class JDate extends DateTime
 			$format = preg_replace('/(^|[^\\\])F/', "\\1" . self::MONTH_NAME, $format);
 		}
 
-		// If the returned time should not be local use GMT.
-		if ($local == false)
+		// If the default timezone is different than GMT, set defined timezone. If not use GMT.
+		if (self::$stz != 'GMT')
+		{
+			parent::setTimezone(self::$stz);
+		}
+		else if ($local == false)
 		{
 			parent::setTimezone(self::$gmt);
 		}
