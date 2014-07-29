@@ -73,6 +73,8 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 
 	if ($metsGym || $metsMedic)
 	{
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_PLACES'), 'index.php?option=com_mets&view=places', 'class:mets'));
+
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
@@ -100,6 +102,8 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_LIST'), 'index.php?option=com_mets&view=patients', 'class:mets'));
 
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_PLANS'), 'index.php?option=com_mets&view=plans', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_SESSION_CODES'), 'index.php?option=com_mets&view=session_codes', 'class:mets'));
 
 	if ($metsReceptionist) {
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_AGENDA'), 'index.php?option=com_mets&view=content&id=3', 'class:mets'));
