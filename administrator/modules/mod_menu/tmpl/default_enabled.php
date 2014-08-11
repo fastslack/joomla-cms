@@ -17,10 +17,20 @@ $user = JFactory::getUser();
 $lang = JFactory::getLanguage();
 
 /*
+ * Check permissions
+ */
+$metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
+$metsGym = $user->authorise('core.gym', 'com_mets');
+$metsMedic = $user->authorise('core.medic', 'com_mets');
+
+/*
  * Site Submenu
  */
 if ($user->authorise('core.admin'))
 {
+	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
+	$menu->getParent();
+
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel'));
 
@@ -50,21 +60,11 @@ if ($user->authorise('core.admin'))
 }
 
 /*
- * Check permissions
- */
-$metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
-$metsGym = $user->authorise('core.gym', 'com_mets');
-$metsMedic = $user->authorise('core.medic', 'com_mets');
-
-/*
  * Intranet Submenu
  */
 
 if ($metsReceptionist || $metsGym || $metsMedic)
 {
-	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
-	$menu->getParent();
-
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_MESSAGES'), 'index.php?option=com_messages&view=message&layout=edit', 'class:mets'));
 	//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMAILS'), 'index.php?option=com_mets&view=content&id=1', 'class:mets'));
@@ -74,16 +74,12 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 	if ($metsGym || $metsMedic)
 	{
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_PLACES'), 'index.php?option=com_mets&view=places', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
 
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
-
-		if ($metsGym || $metsMedic)
-		{
-			$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
-		}
 	}
 
 	$menu->getParent();
