@@ -26,11 +26,12 @@ $metsMedic = $user->authorise('core.medic', 'com_mets');
 /*
  * Site Submenu
  */
+$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
+$menu->getParent();
+
 if ($user->authorise('core.admin'))
 {
-	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
-	$menu->getParent();
-
+	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel'));
 
