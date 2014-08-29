@@ -63,28 +63,19 @@ if ($user->authorise('core.admin'))
 /*
  * Intranet Submenu
  */
-
 if ($metsReceptionist || $metsGym || $metsMedic)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_MESSAGES'), 'index.php?option=com_messages&view=message&layout=edit', 'class:mets'));
-	//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMAILS'), 'index.php?option=com_mets&view=content&id=1', 'class:mets'));
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMAILS'), 'index.php?option=com_mets&view=content&id=1', 'class:mets'));
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_TEL'), 'index.php?option=com_mets&view=content&id=2', 'class:mets'));
-	//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMPLOYEES'), 'index.php?option=com_mets&view=employees', 'class:mets'));
 
-	if ($metsGym || $metsMedic)
+	if ($metsMedic)
 	{
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_PLACES'), 'index.php?option=com_mets&view=places', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
-
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_CONFIG_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
+		//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMPLOYEES'), 'index.php?option=com_mets&view=employees', 'class:mets'));
 	}
 
 	$menu->getParent();
-
 }
 
 /*
@@ -128,6 +119,28 @@ if ($metsGym || $metsMedic)
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_PLANNING'), 'index.php?option=com_mets&view=patients&tab=planning', 'class:mets'));
 
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_TAB_SESSIONS_DETAILS'), 'index.php?option=com_mets&view=patients&tab=sessions', 'class:mets'));
+
+	$menu->getParent();
+}
+
+/*
+ * Gimnasio Submenu
+ */
+if ($metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_HEADER'), '#'), true);
+
+	if ($metsMedic)
+	{
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_PLACES'), 'index.php?option=com_mets&view=places', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
+	}
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
+
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
 
 	$menu->getParent();
 }

@@ -21,6 +21,7 @@ $metsMedic = $user->authorise('core.medic', 'com_mets');
 /**
  * Site SubMenu
 **/
+$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
 $menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'disabled'));
 
 /**
@@ -28,7 +29,6 @@ $menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'disabled'));
 **/
 if ($metsReceptionist || $metsGym || $metsMedic)
 {
-	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), null, 'disabled'));
 }
 
@@ -40,6 +40,11 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 if ($metsGym || $metsMedic)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_HEADER'), null, 'disabled'));
+}
+
+if ($metsGym || $metsMedic)
+{
+	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_HEADER'), null, 'disabled'));
 }
 
 
