@@ -67,7 +67,6 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_MESSAGES'), 'index.php?option=com_messages&view=messages', 'class:mets'));
-	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_EMAILS'), 'index.php?option=com_mets&view=content&id=1', 'class:mets'));
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_TEL'), 'index.php?option=com_mets&view=content&id=2', 'class:mets'));
 
 	if ($metsMedic)
