@@ -46,6 +46,11 @@ if (file_exists( JPATH_LIBRARIES . '/import.php'))
 	require JPATH_LIBRARIES . '/import.php';
 }
 
+// Import the Joomla! CMS
+if (file_exists(JPATH_LIBRARIES.'/cms.php')) {
+	require_once JPATH_LIBRARIES.'/cms.php';
+}
+
 // Ensure that required path constants are defined.
 if (!defined('JPATH_ROOT'))
 {
