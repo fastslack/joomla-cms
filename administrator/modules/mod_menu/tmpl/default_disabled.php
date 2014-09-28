@@ -17,12 +17,17 @@ $showhelp = $params->get('showhelp', 1);
 $metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
 $metsGym = $user->authorise('core.gym', 'com_mets');
 $metsMedic = $user->authorise('core.medic', 'com_mets');
+$metsCrossfit = $user->authorise('core.crossfit', 'com_mets');
 
 /**
  * Site SubMenu
 **/
 $menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
-$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'disabled'));
+
+if (empty($metsCrossfit))
+{
+	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'disabled'));
+}
 
 /**
  * Users Submenu
@@ -37,12 +42,12 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_HEADER'), null, 'disabled'));
 }
 
-if ($metsGym || $metsMedic)
+if ($metsGym || $metsMedic || $metsCrossfit)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ATENTION_HEADER'), null, 'disabled'));
 }
 
-if ($metsGym || $metsMedic)
+if ($metsGym || $metsMedic || $metsCrossfit)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_HEADER'), null, 'disabled'));
 }
