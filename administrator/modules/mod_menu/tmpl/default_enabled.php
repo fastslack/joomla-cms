@@ -27,7 +27,13 @@ $metsCrossfit = $user->authorise('core.crossfit', 'com_mets');
 /*
  * Site Submenu
  */
-$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room'), true);
+if ($metsGym)
+{
+	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room&place_id=1'), true);
+} else if ($metsCrossfit) {
+	$menu->addChild(new JMenuNode(JText::_('BIGG Crossfit'), 'index.php?option=com_mets&view=room&place_id=3'), true);
+}
+
 $menu->getParent();
 
 if ($user->authorise('core.admin'))
