@@ -22,7 +22,13 @@ $metsCrossfit = $user->authorise('core.crossfit', 'com_mets');
 /**
  * Site SubMenu
 **/
-$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
+if ($metsGym)
+{
+	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), null, 'disabled'));
+} else if ($metsCrossfit) {
+	$menu->addChild(new JMenuNode(JText::_('BIGG Crossfit'), null, 'disabled'));
+}
+
 
 if (empty($metsCrossfit))
 {
