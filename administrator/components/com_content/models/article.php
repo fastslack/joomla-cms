@@ -14,9 +14,7 @@ JLoader::register('ContentHelper', JPATH_ADMINISTRATOR . '/components/com_conten
 /**
  * Item Model for an Article.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_content
- * @since       1.6
+ * @since  1.6
  */
 class ContentModelArticle extends JModelAdmin
 {
@@ -92,6 +90,9 @@ class ContentModelArticle extends JModelAdmin
 
 			// Reset hits because we are making a copy
 			$this->table->hits = 0;
+
+			// Unpublish because we are making a copy
+			$this->table->state = 0;
 
 			// New category ID
 			$this->table->catid = $categoryId;

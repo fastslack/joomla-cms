@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Categories Component Category Model
  *
- * @package     Joomla.Administrator
- * @subpackage  com_categories
- * @since       1.6
+ * @since  1.6
  */
 class CategoriesModelCategory extends JModelAdmin
 {
@@ -920,6 +918,9 @@ class CategoriesModelCategory extends JModelAdmin
 			list($title, $alias) = $this->generateNewTitle($this->table->parent_id, $this->table->alias, $this->table->title);
 			$this->table->title = $title;
 			$this->table->alias = $alias;
+
+			// Unpublish because we are making a copy
+			$this->table->published = 0;
 
 			parent::createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
 
