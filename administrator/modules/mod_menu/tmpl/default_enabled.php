@@ -30,8 +30,12 @@ $metsCrossfit = $user->authorise('core.crossfit', 'com_mets');
 if ($metsGym)
 {
 	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room&place_id=1'), true);
+	$menu->getParent();
+	$menu->addChild(new JMenuNode(JText::_('Pantalla'), 'index.php?option=com_mets&view=stats&tmpl=component&place_id=1'), true);
 } else if ($metsCrossfit) {
 	$menu->addChild(new JMenuNode(JText::_('BIGG Crossfit'), 'index.php?option=com_mets&view=room&place_id=3'), true);
+	$menu->getParent();
+	$menu->addChild(new JMenuNode(JText::_('Pantalla'), 'index.php?option=com_mets&view=stats&tmpl=component&place_id=3'), true);
 }
 
 $menu->getParent();
