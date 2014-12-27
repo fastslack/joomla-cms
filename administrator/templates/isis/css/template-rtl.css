@@ -1671,6 +1671,9 @@ legend + .control-group {
 .form-horizontal .form-actions {
 	padding-left: 180px;
 }
+.control-label .hasTooltip {
+	display: inline-block;
+}
 table {
 	max-width: 100%;
 	background-color: transparent;
@@ -7963,6 +7966,9 @@ input.input-large-text {
 .editor {
 	overflow: hidden;
 	position: relative;
+}
+.editor textarea.mce_editable {
+	box-sizing: border-box;
 }
 a.grid_false {
 	display: inline-block;
