@@ -203,7 +203,7 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 
 			$response = array(
 				'error' => 400,
-				'error_description' => 'You no have the right permission for this resource'
+				'error_description' => 'You havent the right permission for this resource.'
 			);
 
 			echo $this->app->setBody(json_encode($response))->sendHeaders()->getBody();
