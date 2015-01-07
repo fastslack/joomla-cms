@@ -112,8 +112,8 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 
 	if ($metsCrossfit || $metsGym)
 	{
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups&place=1', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP_CROSSFIT'), 'index.php?option=com_mets&view=planning_groups&place=3', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups&place_id=1', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP_CROSSFIT'), 'index.php?option=com_mets&view=planning_groups&place_id=3', 'class:mets'));
 	}
 
 	$menu->getParent();
