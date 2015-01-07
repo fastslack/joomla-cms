@@ -186,7 +186,6 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 		}
 
 		return $this;
-
 	}
 
 	/**

@@ -238,6 +238,7 @@ class ApiApplicationWeb extends JApplicationWeb
 			// Set the controller prefix, add maps, and execute the appropriate controller.
 			$this->input = new JInputJson;
 			$this->document = new ApiDocumentHalJson($documentOptions);
+
 			$this->router->setControllerPrefix('ApiServices')
 				->setDefaultController('Root')
 				->addMaps($this->maps)
@@ -427,6 +428,28 @@ class ApiApplicationWeb extends JApplicationWeb
 		}
 
 		return $body;
+	}
+
+	/**
+	 * Enqueue a system message.
+	 *
+	 * @param   string  $msg   The message to enqueue.
+	 * @param   string  $type  The message type. Default is message.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function enqueueMessage($msg, $type = 'message')
+	{
+		// Don't add empty messages.
+		if (!strlen($msg))
+		{
+			return;
+		}
+
+		// Enqueue the message.
+		$this->_messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
 	}
 
 }
