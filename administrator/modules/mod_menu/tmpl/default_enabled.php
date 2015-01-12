@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+ini_set('display_startup_errors',1);
+ini_set('display_errors',1);
+error_reporting(-1);
+
 /* @var $menu JAdminCSSMenu */
 
 $shownew = (boolean) $params->get('shownew', 1);
@@ -20,25 +24,29 @@ $lang = JFactory::getLanguage();
  * Check permissions
  */
 $metsReceptionist = $user->authorise('core.receptionist', 'com_mets');
+$metsCircuit = $user->authorise('core.circuit', 'com_mets');
 $metsGym = $user->authorise('core.gym', 'com_mets');
 $metsMedic = $user->authorise('core.medic', 'com_mets');
 $metsCrossfit = $user->authorise('core.crossfit', 'com_mets');
 
+//$menu->getParent();
+
 /*
  * Site Submenu
  */
-if ($metsGym)
+if ($metsCircuit)
 {
 	$menu->addChild(new JMenuNode(JText::_('WellMets Gym'), 'index.php?option=com_mets&view=room&place_id=1'), true);
 	$menu->getParent();
 	$menu->addChild(new JMenuNode(JText::_('Pantalla'), 'index.php?option=com_mets&view=stats&tmpl=component&place_id=1'), true);
+	$menu->getParent();
 } else if ($metsCrossfit) {
 	$menu->addChild(new JMenuNode(JText::_('BIGG Crossfit'), 'index.php?option=com_mets&view=room&place_id=3'), true);
 	$menu->getParent();
 	$menu->addChild(new JMenuNode(JText::_('Pantalla'), 'index.php?option=com_mets&view=stats&tmpl=component&place_id=3'), true);
 }
 
-$menu->getParent();
+//$menu->getParent();
 
 if ($user->authorise('core.admin'))
 {
@@ -50,13 +58,13 @@ if ($user->authorise('core.admin'))
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config'));
 }
 
-if ($user->authorise('core.manage', 'com_checkin'))
+if ($user->authorise('core.admin', 'com_checkin'))
 {
 	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_GLOBAL_CHECKIN'), 'index.php?option=com_checkin', 'class:checkin'));
 }
 
-if ($user->authorise('core.manage', 'com_cache'))
+if ($user->authorise('core.admin', 'com_cache'))
 {
 	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CLEAR_CACHE'), 'index.php?option=com_cache', 'class:clear'));
@@ -74,7 +82,7 @@ if ($user->authorise('core.admin'))
 /*
  * Intranet Submenu
  */
-if ($metsReceptionist || $metsGym || $metsMedic)
+if ($metsReceptionist || $metsMedic)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), '#'), true);
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_MESSAGES'), 'index.php?option=com_messages&view=messages', 'class:mets'));
@@ -101,18 +109,21 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_ZONE'), 'index.php?option=com_mets&view=zones', 'class:mets'));
 	}
 
-	if ($metsGym)
+	if ($metsGym || $metsCrossfit)
 	{
 
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EQUIPMENT'), 'index.php?option=com_mets&view=equipments', 'class:mets'));
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
+		//$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_MUSCLES'), 'index.php?option=com_mets&view=muscles', 'class:mets'));
 
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
 	}
 
-	if ($metsCrossfit || $metsGym)
+	if ($metsGym || $metsMedic)
 	{
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups&place_id=1', 'class:mets'));
+	}
+
+	if ($metsCrossfit || $metsMedic) {
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP_CROSSFIT'), 'index.php?option=com_mets&view=planning_groups&place_id=3', 'class:mets'));
 	}
 
@@ -122,7 +133,7 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 /*
  * Administracion
  */
-if ($metsReceptionist || $metsGym || $metsMedic)
+if ($metsReceptionist || $metsGym || $metsMedic || $metsCrossfit)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_HEADER'), '#'), true);
 
@@ -130,9 +141,11 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_LIST'), 'index.php?option=com_mets&view=patients', 'class:mets'));
 
-	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_PLANS'), 'index.php?option=com_mets&view=plans', 'class:mets'));
-
-	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_SESSION_CODES'), 'index.php?option=com_mets&view=session_codes', 'class:mets'));
+	if ($metsMedic)
+	{
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_PLANS'), 'index.php?option=com_mets&view=plans', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_SESSION_CODES'), 'index.php?option=com_mets&view=session_codes', 'class:mets'));
+	}
 
 	if ($metsReceptionist) {
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_AGENDA'), 'index.php?option=com_mets&view=content&id=3', 'class:mets'));
@@ -173,7 +186,7 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 /*
  * Users Submenu
  */
-if ($user->authorise('core.manage', 'com_users'))
+if ($user->authorise('core.admin', 'com_users'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_USERS_USERS'), '#'), true);
 	$createUser = $shownew && $user->authorise('core.create', 'com_users');
@@ -244,7 +257,7 @@ if ($user->authorise('core.manage', 'com_users'))
 /*
  * Menus Submenu
  */
-if ($user->authorise('core.manage', 'com_menus'))
+if ($user->authorise('core.admin', 'com_menus'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MENUS'), '#'), true);
 	$createMenu = $shownew && $user->authorise('core.create', 'com_menus');
@@ -318,7 +331,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 /*
  * Content Submenu
  */
-if ($user->authorise('core.manage', 'com_content'))
+if ($user->authorise('core.admin', 'com_content'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT'), '#'), true);
 	$createContent = $shownew && $user->authorise('core.create', 'com_content');
@@ -365,7 +378,7 @@ if ($user->authorise('core.manage', 'com_content'))
 // Get the authorised components and sub-menus.
 $components = ModMenuHelper::getComponents(true);
 
-$cm = $user->authorise('core.manage', 'com_installer');
+$cm = $user->authorise('core.admin', 'com_installer');
 
 // Check if there are any components, otherwise, don't render the menu
 if ($components && $cm)
@@ -398,11 +411,11 @@ if ($components && $cm)
 /*
  * Extensions Submenu
  */
-$im = $user->authorise('core.manage', 'com_installer');
-$mm = $user->authorise('core.manage', 'com_modules');
-$pm = $user->authorise('core.manage', 'com_plugins');
-$tm = $user->authorise('core.manage', 'com_templates');
-$lm = $user->authorise('core.manage', 'com_languages');
+$im = $user->authorise('core.admin', 'com_installer');
+$mm = $user->authorise('core.admin', 'com_modules');
+$pm = $user->authorise('core.admin', 'com_plugins');
+$tm = $user->authorise('core.admin', 'com_templates');
+$lm = $user->authorise('core.admin', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
