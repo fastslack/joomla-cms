@@ -43,7 +43,7 @@ if ($metsReceptionist || $metsGym || $metsMedic)
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_INTRANET_HEADER'), null, 'disabled'));
 }
 
-if ($metsReceptionist || $metsGym || $metsMedic)
+if ($metsReceptionist || $metsGym || $metsMedic || $metsCrossfit)
 {
 	$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_ADMIN_HEADER'), null, 'disabled'));
 }
@@ -62,7 +62,7 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 /**
  * Users Submenu
 **/
-if ($user->authorise('core.manage', 'com_users'))
+if ($user->authorise('core.admin', 'com_users'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_USERS'), null, 'disabled'));
 }
@@ -70,7 +70,7 @@ if ($user->authorise('core.manage', 'com_users'))
 /**
  * Menus Submenu
 **/
-if ($user->authorise('core.manage', 'com_menus'))
+if ($user->authorise('core.admin', 'com_menus'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MENUS'), null, 'disabled'));
 }
@@ -78,7 +78,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 /**
  * Content Submenu
 **/
-if ($user->authorise('core.manage', 'com_content'))
+if ($user->authorise('core.admin', 'com_content'))
 {
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT'), null, 'disabled'));
 }
@@ -90,7 +90,7 @@ if ($user->authorise('core.manage', 'com_content'))
 // Get the authorised components and sub-menus.
 $components = ModMenuHelper::getComponents(true);
 
-$cm = $user->authorise('core.manage', 'com_installer');
+$cm = $user->authorise('core.admin', 'com_installer');
 
 // Check if there are any components, otherwise, don't render the menu
 if ($components && $cm)
@@ -101,11 +101,11 @@ if ($components && $cm)
 /**
  * Extensions Submenu
 **/
-$im = $user->authorise('core.manage', 'com_installer');
-$mm = $user->authorise('core.manage', 'com_modules');
-$pm = $user->authorise('core.manage', 'com_plugins');
-$tm = $user->authorise('core.manage', 'com_templates');
-$lm = $user->authorise('core.manage', 'com_languages');
+$im = $user->authorise('core.admin', 'com_installer');
+$mm = $user->authorise('core.admin', 'com_modules');
+$pm = $user->authorise('core.admin', 'com_plugins');
+$tm = $user->authorise('core.admin', 'com_templates');
+$lm = $user->authorise('core.admin', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
