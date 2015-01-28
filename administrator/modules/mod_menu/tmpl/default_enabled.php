@@ -66,7 +66,6 @@ if ($user->authorise('core.admin', 'com_checkin'))
 
 if ($user->authorise('core.admin', 'com_cache'))
 {
-	$menu->addSeparator();
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_CLEAR_CACHE'), 'index.php?option=com_cache', 'class:clear'));
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_PURGE_EXPIRED_CACHE'), 'index.php?option=com_cache&view=purge', 'class:purge'));
 }
@@ -273,7 +272,10 @@ if ($user->authorise('core.admin', 'com_menus'))
 	$menu->addSeparator();
 
 	// Menu Types
-	foreach (ModMenuHelper::getMenus() as $menuType)
+	$menuTypes = ModMenuHelper::getMenus();
+	$menuTypes = JArrayHelper::sortObjects($menuTypes, 'title', 1, false);
+
+	foreach ($menuTypes as $menuType)
 	{
 		$alt = '*' . $menuType->sef . '*';
 
@@ -480,7 +482,7 @@ if ($showhelp == 1)
 	}
 
 	$lang->setDebug($debug);
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_HELP_DOCUMENTATION'), 'http://docs.joomla.org', 'class:help-docs', false, '_blank'));
+	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_HELP_DOCUMENTATION'), 'https://docs.joomla.org', 'class:help-docs', false, '_blank'));
 	$menu->addSeparator();
 
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_HELP_EXTENSIONS'), 'http://extensions.joomla.org', 'class:help-jed', false, '_blank'));
