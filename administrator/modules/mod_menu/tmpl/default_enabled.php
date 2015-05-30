@@ -117,13 +117,9 @@ if ($metsGym || $metsMedic || $metsCrossfit)
 		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES'), 'index.php?option=com_mets&view=exercises', 'class:mets'));
 	}
 
-	if ($metsGym || $metsMedic)
+	if ($metsGym || $metsMedic || $metsCrossfit)
 	{
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups&place_id=1', 'class:mets'));
-	}
-
-	if ($metsCrossfit || $metsMedic) {
-		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP_CROSSFIT'), 'index.php?option=com_mets&view=planning_groups&place_id=3', 'class:mets'));
+		$menu->addChild(new JMenuNode(JText::_('COM_METS_MOD_GYM_EXERCISES_GROUP'), 'index.php?option=com_mets&view=planning_groups', 'class:mets'));
 	}
 
 	$menu->getParent();
