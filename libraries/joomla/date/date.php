@@ -287,11 +287,7 @@ class JDate extends DateTime
 		}
 
 		// If the returned time should not be local use GMT.
-<<<<<<< HEAD
-		if ($local == false && !isset($this->tz))
-=======
 		if ($local == false && !empty(self::$gmt))
->>>>>>> upstream/master
 		{
 			parent::setTimezone(self::$gmt);
 		}
