@@ -959,6 +959,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	protected function header($string, $replace = true, $code = null)
 	{
+		$string = str_replace(chr(0), '', $string);
 		header($string, $replace, $code);
 	}
 
