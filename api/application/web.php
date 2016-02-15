@@ -452,4 +452,16 @@ class ApiApplicationWeb extends JApplicationWeb
 		$this->_messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
 	}
 
+	/**
+	 * Get template method
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function getTemplate()
+	{
+		return false;
+	}
+
 }
