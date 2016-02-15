@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Database
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -121,7 +121,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 
 		if (preg_match($regex, $this->options['host'], $matches))
 		{
-			// It's an IPv4 address with ot without port
+			// It's an IPv4 address with or without port
 			$this->options['host'] = $matches['host'];
 
 			if (!empty($matches['port']))
@@ -141,7 +141,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		}
 		elseif (preg_match('/^(?P<host>(\w+:\/{2,3})?[a-z0-9\.\-]+)(:(?P<port>[^:]+))?$/i', $this->options['host'], $matches))
 		{
-			// Named host (e.g domain.com or localhost) with ot without port
+			// Named host (e.g example.com or localhost) with or without port
 			$this->options['host'] = $matches['host'];
 
 			if (!empty($matches['port']))
@@ -216,7 +216,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	public function disconnect()
 	{
 		// Close the connection.
-		if ($this->connection)
+		if ($this->connection instanceof mysqli && $this->connection->stat() !== false)
 		{
 			foreach ($this->disconnectHandlers as $h)
 			{
