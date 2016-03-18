@@ -194,6 +194,37 @@ class ApiApplicationWeb extends JApplicationWeb
 	}
 
 	/**
+	 * Returns the application JRouter object.
+	 *
+	 * @param   string  $name     The name of the application.
+	 * @param   array   $options  An optional associative array of configuration settings.
+	 *
+	 * @return  JRouter|null  A JRouter object
+	 *
+	 * @since   11.1
+	 * @deprecated  4.0
+	 */
+	public static function getRouter($name = null, array $options = array())
+	{
+		if (!isset($name))
+		{
+			$app = JFactory::getApplication();
+			//$name = $app->getName();
+		}
+
+		try
+		{
+			$router = JRouter::getInstance('site', $options);
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+
+		return $router;
+	}
+
+	/**
 	 * Allows the application to load a custom or default dispatcher.
 	 *
 	 * The logic and options for creating this object are adequately generic for default cases
@@ -472,6 +503,18 @@ class ApiApplicationWeb extends JApplicationWeb
 	 * @since   3.2
 	 */
 	public function getUserState()
+	{
+		return false;
+	}
+
+	/**
+	 * Is administrator
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function isAdmin()
 	{
 		return false;
 	}
