@@ -20,6 +20,10 @@ $path      = $base->tree;
 $showAll   = $params->get('showAllChildren');
 $class_sfx = htmlspecialchars($params->get('class_sfx'));
 
+$showAll = 0;
+
+echo "<br><br>";
+var_dump($showAll);
 if (count($list))
 {
 	require JModuleHelper::getLayoutPath('mod_menu', $params->get('layout', 'default'));

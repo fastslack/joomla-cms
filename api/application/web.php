@@ -464,4 +464,15 @@ class ApiApplicationWeb extends JApplicationWeb
 		return false;
 	}
 
+	/**
+	 * Get User State
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function getUserState()
+	{
+		return false;
+	}
 }

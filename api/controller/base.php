@@ -206,7 +206,7 @@ abstract class ApiControllerBase extends JControllerBase implements ApiControlle
 			);
 
 			echo $this->app->setBody(json_encode($response))->sendHeaders()->getBody();
-			exit;	
+			exit;
 		}
 	}
 }

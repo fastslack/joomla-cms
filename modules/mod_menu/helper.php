@@ -36,6 +36,7 @@ class ModMenuHelper
 		$base = self::getBase($params);
 		$user = JFactory::getUser();
 		$levels = $user->getAuthorisedViewLevels();
+
 		asort($levels);
 		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $base->id;
 		$cache = JFactory::getCache('mod_menu', '');

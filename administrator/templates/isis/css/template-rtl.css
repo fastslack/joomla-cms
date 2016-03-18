@@ -2790,6 +2790,9 @@ input[type="submit"].btn.btn-mini {
 	color: #8a6d3b;
 }
 .alert h4 {
+	margin: 0 0 .5em;
+}
+.alert p {
 	margin: 0;
 }
 .alert .close {
@@ -8158,6 +8161,15 @@ body.modal-open {
 }
 .js-pstats-data-details dt {
 	width: 220px;
+}
+@media (max-width: 767px) {
+	.field-media-wrapper .modal .modal-body {
+		padding: 5px 0;
+	}
+}
+.modal-body {
+	-webkit-overflow-scrolling: touch;
+	overflow-y: auto !important;
 }
 .pull-right {
 	float: left;
