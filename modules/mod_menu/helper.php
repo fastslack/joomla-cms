@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  mod_menu
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -36,19 +36,20 @@ class ModMenuHelper
 		$base = self::getBase($params);
 		$user = JFactory::getUser();
 		$levels = $user->getAuthorisedViewLevels();
+
 		asort($levels);
 		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $base->id;
 		$cache = JFactory::getCache('mod_menu', '');
 
 		if (!($items = $cache->get($key)))
 		{
-			$path    = $base->tree;
-			$start   = (int) $params->get('startLevel');
-			$end     = (int) $params->get('endLevel');
-			$showAll = $params->get('showAllChildren');
-			$items   = $menu->getItems('menutype', $params->get('menutype'));
-
-			$lastitem = 0;
+			$path           = $base->tree;
+			$start          = (int) $params->get('startLevel');
+			$end            = (int) $params->get('endLevel');
+			$showAll        = $params->get('showAllChildren');
+			$items          = $menu->getItems('menutype', $params->get('menutype'));
+			$hidden_parents = array();
+			$lastitem       = 0;
 
 			if ($items)
 			{
@@ -59,6 +60,14 @@ class ModMenuHelper
 						|| (!$showAll && $item->level > 1 && !in_array($item->parent_id, $path))
 						|| ($start > 1 && !in_array($item->tree[$start - 2], $path)))
 					{
+						unset($items[$i]);
+						continue;
+					}
+
+					// Exclude item with menu item option set to exclude from menu modules
+					if (($item->params->get('menu_show', 1) == 0) || in_array($item->parent_id, $hidden_parents))
+					{
+						$hidden_parents[] = $item->id;
 						unset($items[$i]);
 						continue;
 					}
