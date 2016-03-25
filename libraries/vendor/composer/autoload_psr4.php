@@ -27,4 +27,5 @@ return array(
     'Joomla\\DI\\' => array($vendorDir . '/joomla/di/src'),
     'Joomla\\Application\\Tests\\' => array($vendorDir . '/joomla/application/Tests'),
     'Joomla\\Application\\' => array($vendorDir . '/joomla/application/src'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
 );
