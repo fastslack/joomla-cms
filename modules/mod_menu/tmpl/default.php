@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-print_r($list);
-
 // Note. It is important to remove spaces between elements.
 ?>
 <?php // The menu class is deprecated. Use nav instead. ?>
