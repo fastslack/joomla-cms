@@ -518,4 +518,16 @@ class ApiApplicationWeb extends JApplicationWeb
 	{
 		return false;
 	}
+
+	/**
+	 * Is administrator
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function toString()
+	{
+		return false;
+	}
 }

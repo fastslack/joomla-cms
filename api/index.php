@@ -88,6 +88,14 @@ if (!defined('JPATH_PLUGINS'))
 {
 	define('JPATH_PLUGINS', $JAPIHOME . '/plugins');
 }
+if (!defined('JPATH_THEMES'))
+{
+	define('JPATH_THEMES', $JAPIHOME . '/templates');
+}
+if (!defined('JDEBUG'))
+{
+	define('JDEBUG', $JAPIHOME . '/tmp');
+}
 
 try
 {
