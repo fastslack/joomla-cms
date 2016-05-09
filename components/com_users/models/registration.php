@@ -375,7 +375,7 @@ class UsersModelRegistration extends JModelForm
 		// Prepare the data for the user object.
 		$data['email'] = JStringPunycode::emailToPunycode($data['email1']);
 		$data['password'] = $data['password1'];
-		$useractivation = $params->get('useractivation');
+		$useractivation = isset($data['useractivation']) ? $data['useractivation'] : $params->get('useractivation');
 		$sendpassword = $params->get('sendpassword', 1);
 
 		// Check if the user needs to activate their account.
