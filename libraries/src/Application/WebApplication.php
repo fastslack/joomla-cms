@@ -1036,6 +1036,11 @@ class WebApplication extends BaseApplication
 		{
 			\JLoader::register($class, $file);
 
+			if (!class_exists($class))
+			{
+				include_once ($file);
+			}
+
 			if (class_exists($class))
 			{
 				$config = new $class;
