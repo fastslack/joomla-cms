@@ -26,10 +26,10 @@ class PlgContentPagenavigation extends CMSPlugin
 	/**
 	 * If in the article view and the parameter is enabled shows the page navigation
 	 *
-	 * @param   string   $context  The context of the content being passed to the plugin
-	 * @param   object   &$row     The article object
-	 * @param   mixed    &$params  The article params
-	 * @param   integer  $page     The 'page' number
+	 * @param   string    $context  The context of the content being passed to the plugin
+	 * @param   object   &$row      The article object
+	 * @param   mixed    &$params   The article params
+	 * @param   integer   $page     The 'page' number
 	 *
 	 * @return  mixed  void or true
 	 *
@@ -64,7 +64,7 @@ class PlgContentPagenavigation extends CMSPlugin
 			 * The following is needed as different menu items types utilise a different param to control ordering.
 			 * For Blogs the `orderby_sec` param is the order controlling param.
 			 * For Table and List views it is the `orderby` param.
-			**/
+			 **/
 			$params_list = $params->toArray();
 
 			if (array_key_exists('orderby_sec', $params_list))
@@ -143,8 +143,7 @@ class PlgContentPagenavigation extends CMSPlugin
 				->select($case_when)
 				->select($case_when1)
 				->from('#__content AS a')
-				->join('LEFT', '#__categories AS cc ON cc.id = a.catid')
-				->join('LEFT', '#__workflow_stages AS ws ON ws.id = a.state');
+				->join('LEFT', '#__categories AS cc ON cc.id = a.catid');
 
 			if ($order_method === 'author' || $order_method === 'rauthor')
 			{
@@ -153,9 +152,9 @@ class PlgContentPagenavigation extends CMSPlugin
 			}
 
 			$query->where(
-					'a.catid = ' . (int) $row->catid . ' AND a.state = ' . (int) $row->state
-						. ($canPublish ? '' : ' AND a.access IN (' . implode(',', Access::getAuthorisedViewLevels($user->id)) . ') ') . $xwhere
-				);
+				'a.catid = ' . (int) $row->catid . ' AND a.state = ' . (int) $row->state
+				. ($canPublish ? '' : ' AND a.access IN (' . implode(',', Access::getAuthorisedViewLevels($user->id)) . ') ') . $xwhere
+			);
 			$query->order($orderby);
 
 			if ($app->isClient('site') && $app->getLanguageFilter())
@@ -196,23 +195,23 @@ class PlgContentPagenavigation extends CMSPlugin
 			if ($row->prev)
 			{
 				$row->prev_label = ($this->params->get('display', 0) == 0) ? Text::_('JPREV') : $row->prev->title;
-				$row->prev = Route::_(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catid, $row->prev->language));
+				$row->prev       = Route::_(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catid, $row->prev->language));
 			}
 			else
 			{
 				$row->prev_label = '';
-				$row->prev = '';
+				$row->prev       = '';
 			}
 
 			if ($row->next)
 			{
 				$row->next_label = ($this->params->get('display', 0) == 0) ? Text::_('JNEXT') : $row->next->title;
-				$row->next = Route::_(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catid, $row->next->language));
+				$row->next       = Route::_(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catid, $row->next->language));
 			}
 			else
 			{
 				$row->next_label = '';
-				$row->next = '';
+				$row->next       = '';
 			}
 
 			// Output.

@@ -76,9 +76,9 @@ class PlgSearchContent extends CMSPlugin
 		$sArchived = $this->params->get('search_archived', 1);
 		$limit     = $this->params->def('search_limit', 50);
 
-		$nullDate  = $db->getNullDate();
-		$date      = Factory::getDate();
-		$now       = $date->toSql();
+		$nullDate = $db->getNullDate();
+		$date     = Factory::getDate();
+		$now      = $date->toSql();
 
 		$text = trim($text);
 
@@ -141,8 +141,8 @@ class PlgSearchContent extends CMSPlugin
 			case 'all':
 			case 'any':
 			default:
-				$words = explode(' ', $text);
-				$wheres = array();
+				$words   = explode(' ', $text);
+				$wheres  = array();
 				$cfwhere = array();
 
 				foreach ($words as $word)
@@ -260,7 +260,7 @@ class PlgSearchContent extends CMSPlugin
 				break;
 		}
 
-		$rows = array();
+		$rows  = array();
 		$query = $db->getQuery(true);
 
 		// Search articles.
@@ -291,14 +291,13 @@ class PlgSearchContent extends CMSPlugin
 				->from($db->quoteName('#__content', 'a'))
 				->innerJoin($db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
 				->join('LEFT', '#__workflow_associations AS wa ON wa.item_id = a.id')
-				->join('INNER', '#__workflow_stages AS ws ON ws.id = wa.stage_id')
 				->where($db->quoteName('wa.extension') . '=' . $db->quote('com_content'))
 				->where(
 					'(' . $where . ') AND c.published = 1 AND a.access IN (' . $groups . ') '
-						. 'AND (ws.condition = ' . ContentComponent::CONDITION_PUBLISHED . ') '
-						. 'AND c.access IN (' . $groups . ') '
-						. 'AND (a.publish_up = ' . $db->quote($nullDate) . ' OR a.publish_up <= ' . $db->quote($now) . ') '
-						. 'AND (a.publish_down = ' . $db->quote($nullDate) . ' OR a.publish_down >= ' . $db->quote($now) . ')'
+					. 'AND (a.state = ' . ContentComponent::CONDITION_PUBLISHED . ') '
+					. 'AND c.access IN (' . $groups . ') '
+					. 'AND (a.publish_up = ' . $db->quote($nullDate) . ' OR a.publish_up <= ' . $db->quote($now) . ') '
+					. 'AND (a.publish_down = ' . $db->quote($nullDate) . ' OR a.publish_down >= ' . $db->quote($now) . ')'
 				)
 				->group('a.id, a.title, a.metadesc, a.metakey, a.created, a.language, a.catid, a.introtext, a.fulltext, c.title, a.alias, c.alias, c.id')
 				->order($order);
@@ -341,8 +340,8 @@ class PlgSearchContent extends CMSPlugin
 			$query->clear();
 
 			$case_when = ' CASE WHEN ' . $query->charLength('a.alias', '!=', '0')
-			. ' THEN ' . $query->concatenate(array($query->castAsChar('a.id'), 'a.alias'), ':')
-			. ' ELSE ' . $query->castAsChar('a.id') . ' END AS slug';
+				. ' THEN ' . $query->concatenate(array($query->castAsChar('a.id'), 'a.alias'), ':')
+				. ' ELSE ' . $query->castAsChar('a.id') . ' END AS slug';
 
 			$case_when1 = ' CASE WHEN ' . $query->charLength('c.alias', '!=', '0')
 				. ' THEN ' . $query->concatenate(array($query->castAsChar('c.id'), 'c.alias'), ':')
@@ -364,9 +363,9 @@ class PlgSearchContent extends CMSPlugin
 				->innerJoin($db->quoteName('#__categories', 'c') . ' ON c.id = a.catid AND c.access IN (' . $groups . ')')
 				->where(
 					'(' . $where . ') AND a.state = 2 AND c.published = 1 AND a.access IN (' . $groups
-						. ') AND c.access IN (' . $groups . ') '
-						. 'AND (a.publish_up = ' . $db->quote($nullDate) . ' OR a.publish_up <= ' . $db->quote($now) . ') '
-						. 'AND (a.publish_down = ' . $db->quote($nullDate) . ' OR a.publish_down >= ' . $db->quote($now) . ')'
+					. ') AND c.access IN (' . $groups . ') '
+					. 'AND (a.publish_up = ' . $db->quote($nullDate) . ' OR a.publish_up <= ' . $db->quote($now) . ') '
+					. 'AND (a.publish_down = ' . $db->quote($nullDate) . ' OR a.publish_down >= ' . $db->quote($now) . ')'
 				)
 				->order($order);
 
@@ -392,7 +391,7 @@ class PlgSearchContent extends CMSPlugin
 			}
 
 			// Find an itemid for archived to use if there isn't another one.
-			$item = $app->getMenu()->getItems('link', 'index.php?option=com_content&view=archive', true);
+			$item   = $app->getMenu()->getItems('link', 'index.php?option=com_content&view=archive', true);
 			$itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 
 			if (isset($list3))
@@ -402,7 +401,7 @@ class PlgSearchContent extends CMSPlugin
 					$date = Factory::getDate($item->created);
 
 					$created_month = $date->format('n');
-					$created_year = $date->format('Y');
+					$created_year  = $date->format('Y');
 
 					$list3[$key]->href = Route::_('index.php?option=com_content&view=archive&year=' . $created_year . '&month=' . $created_month . $itemid);
 				}

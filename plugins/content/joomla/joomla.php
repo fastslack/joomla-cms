@@ -111,7 +111,7 @@ class PlgContentJoomla extends CMSPlugin
 			return true;
 		}
 
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__users'))
@@ -130,8 +130,8 @@ class PlgContentJoomla extends CMSPlugin
 		// Messaging for new items
 
 		$default_language = ComponentHelper::getParams('com_languages')->get('administrator');
-		$debug = Factory::getApplication()->get('debug_lang');
-		$result = true;
+		$debug            = Factory::getApplication()->get('debug_lang');
+		$result           = true;
 
 		foreach ($users as $user_id)
 		{
@@ -139,16 +139,16 @@ class PlgContentJoomla extends CMSPlugin
 			{
 				// Load language for messaging
 				$receiver = User::getInstance($user_id);
-				$lang = Language::getInstance($receiver->getParam('admin_language', $default_language), $debug);
+				$lang     = Language::getInstance($receiver->getParam('admin_language', $default_language), $debug);
 				$lang->load('com_content');
-				$message = array(
+				$message       = array(
 					'user_id_to' => $user_id,
-					'subject' => $lang->_('COM_CONTENT_NEW_ARTICLE'),
-					'message' => sprintf($lang->_('COM_CONTENT_ON_NEW_CONTENT'), $user->get('name'), $article->title)
+					'subject'    => $lang->_('COM_CONTENT_NEW_ARTICLE'),
+					'message'    => sprintf($lang->_('COM_CONTENT_ON_NEW_CONTENT'), $user->get('name'), $article->title)
 				);
 				$model_message = Factory::getApplication()->bootComponent('com_messages')->getMVCFactory()
 					->createModel('Message', 'Administrator');
-				$result = $model_message->save($message);
+				$result        = $model_message->save($message);
 			}
 		}
 
@@ -242,11 +242,11 @@ class PlgContentJoomla extends CMSPlugin
 		$result = true;
 
 		$tableInfo = array(
-			'com_banners' => array('table_name' => '#__banners'),
-			'com_contact' => array('table_name' => '#__contact_details'),
-			'com_content' => array('table_name' => '#__content'),
+			'com_banners'   => array('table_name' => '#__banners'),
+			'com_contact'   => array('table_name' => '#__contact_details'),
+			'com_content'   => array('table_name' => '#__content'),
 			'com_newsfeeds' => array('table_name' => '#__newsfeeds'),
-			'com_weblinks' => array('table_name' => '#__weblinks')
+			'com_weblinks'  => array('table_name' => '#__weblinks')
 		);
 
 		// Now check to see if this is a known core extension
@@ -430,7 +430,7 @@ class PlgContentJoomla extends CMSPlugin
 	 */
 	private function _countItemsInCategory($table, $catid)
 	{
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Count the items in this category
@@ -453,8 +453,6 @@ class PlgContentJoomla extends CMSPlugin
 		return $count;
 	}
 
-
-
 	/**
 	 * Get count of items in assigned to a stage
 	 *
@@ -465,7 +463,7 @@ class PlgContentJoomla extends CMSPlugin
 	 *
 	 * @since   4.0.0
 	 */
-	private function _countItemsInStage(array $stage_ids, string $extension) : bool
+	private function _countItemsInStage(array $stage_ids, string $extension): bool
 	{
 		$db = $this->db;
 
@@ -492,13 +490,9 @@ class PlgContentJoomla extends CMSPlugin
 
 		$query = $db->getQuery(true);
 
-		$query	->select('COUNT(' . $db->quoteName('b.id') . ')')
-				->from($query->quoteName('#__workflow_associations', 'wa'))
-				->from($query->quoteName('#__workflow_stages', 's'))
-				->from($db->quoteName($table, 'b'))
-				->where($db->quoteName('wa.stage_id') . ' = ' . $db->quoteName('s.id'))
-				->where($db->quoteName('wa.item_id') . ' = ' . $db->quoteName('b.id'))
-				->whereIn($db->quoteName('s.id'), $stage_ids);
+		$query->select('COUNT(' . $db->quoteName('b.id') . ')')
+			->from($db->quoteName($table, 'b'))
+			->whereIn($db->quoteName('b.stage_id'), $stage_ids);
 
 		try
 		{
@@ -603,7 +597,7 @@ class PlgContentJoomla extends CMSPlugin
 			return true;
 		}
 
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('core_content_id'))
 			->from($db->quoteName('#__ucm_content'))
@@ -632,8 +626,8 @@ class PlgContentJoomla extends CMSPlugin
 
 		// Messaging for changed items
 		$default_language = JComponentHelper::getParams('com_languages')->get('administrator');
-		$debug = Factory::getApplication()->get('debug_lang');
-		$result = true;
+		$debug            = Factory::getApplication()->get('debug_lang');
+		$result           = true;
 
 		$article = new ArticleTable($db);
 
@@ -668,8 +662,7 @@ class PlgContentJoomla extends CMSPlugin
 					// Check if the user has available transitions
 					$items = array_filter(
 						$transitions,
-						function ($item) use ($user)
-						{
+						function ($item) use ($user) {
 							return $user->authorise('core.execute.transition', 'com_content.transition.' . $item->id);
 						}
 					);
@@ -681,18 +674,18 @@ class PlgContentJoomla extends CMSPlugin
 
 					// Load language for messaging
 					$receiver = JUser::getInstance($user_id);
-					$lang = JLanguage::getInstance($receiver->getParam('admin_language', $default_language), $debug);
+					$lang     = JLanguage::getInstance($receiver->getParam('admin_language', $default_language), $debug);
 					$lang->load('plg_content_joomla');
 
 					$message = array(
 						'user_id_to' => $user_id,
-						'subject' => $lang->_('PLG_CONTENT_JOOMLA_ON_STAGE_CHANGE_SUBJECT'),
-						'message' => sprintf($lang->_('PLG_CONTENT_JOOMLA_ON_STAGE_CHANGE_MSG'), $user->name, $article->title)
+						'subject'    => $lang->_('PLG_CONTENT_JOOMLA_ON_STAGE_CHANGE_SUBJECT'),
+						'message'    => sprintf($lang->_('PLG_CONTENT_JOOMLA_ON_STAGE_CHANGE_MSG'), $user->name, $article->title)
 					);
 
 					$model_message = Factory::getApplication()->bootComponent('com_messages')
 						->getMVCFactory()->createModel('Message', 'Administrator');
-					$result = $model_message->save($message);
+					$result        = $model_message->save($message);
 				}
 			}
 		}
