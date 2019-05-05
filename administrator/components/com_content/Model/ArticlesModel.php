@@ -232,33 +232,6 @@ class ArticlesModel extends ListModel
 		$query->select('ua.name AS author_name')
 			->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
-		// Join over the associations.
-		$query->select($query->quoteName('wa.stage_id', 'stage_id'))
-			->innerJoin(
-				$query->quoteName('#__workflow_associations', 'wa') 
-				. ' ON ' . $query->quoteName('wa.item_id') . ' = ' . $query->quoteName('a.id')
-			);
-
-		// Join over the workflow stages.
-		$query->select(
-			$query->quoteName(
-				[
-					'ws.title',
-					'ws.condition',
-					'ws.workflow_id'
-				],
-				[
-					'stage_title',
-					'stage_condition',
-					'workflow_id'
-				]
-			)
-		)
-		->innerJoin(
-			$query->quoteName('#__workflow_stages', 'ws')
-			. ' ON ' . $query->quoteName('ws.id') . ' = ' . $query->quoteName('wa.stage_id')
-		);
-
 		// Join on voting table
 		$associationsGroupBy = array(
 			'a.id',
@@ -287,10 +260,6 @@ class ArticlesModel extends ListModel
 			'c.created_user_id',
 			'c.level',
 			'ua.name',
-			'ws.title',
-			'ws.workflow_id',
-			'ws.condition',
-			'wa.stage_id',
 			'parent.id',
 		);
 
@@ -347,7 +316,7 @@ class ArticlesModel extends ListModel
 
 		if (is_numeric($workflowStage))
 		{
-			$query->where('wa.stage_id = ' . (int) $workflowStage);
+			$query->where('a.stage_id = ' . (int) $workflowStage);
 		}
 
 		$condition = (string) $this->getState('filter.condition');
@@ -356,12 +325,12 @@ class ArticlesModel extends ListModel
 		{
 			if (is_numeric($condition))
 			{
-				$query->where($db->quoteName('ws.condition') . ' = ' . (int) $condition);
+				$query->where($db->quoteName('a.state') . ' = ' . (int) $condition);
 			}
 			elseif (!is_numeric($workflowStage))
 			{
 				$query->whereIn(
-					$db->quoteName('ws.condition'),
+					$db->quoteName('a.state'),
 					[
 						ContentComponent::CONDITION_PUBLISHED,
 						ContentComponent::CONDITION_UNPUBLISHED
@@ -369,8 +338,6 @@ class ArticlesModel extends ListModel
 				);
 			}
 		}
-
-		$query->where($db->quoteName('wa.extension') . '=' . $db->quote('com_content'));
 
 		// Filter by categories and by level
 		$categoryId = $this->getState('filter.category_id', array());

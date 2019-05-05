@@ -241,13 +241,12 @@ class ArticlesModel extends ListModel
 			$query->join('LEFT', '#__content_frontpage AS fp ON fp.content_id = a.id');
 		}
 
-		// Join over the states.
-		$query->select('wa.stage_id AS stage_id')
-			->join('LEFT', '#__workflow_associations AS wa ON wa.item_id = a.id');
+		// Select stage id
+		$query->select('a.stage_id');
 
 		// Join over the states.
 		$query->select('ws.title AS state_title, ws.condition AS stage_condition')
-			->join('LEFT', '#__workflow_stages AS ws ON ws.id = wa.stage_id');
+			->join('LEFT', '#__workflow_stages AS ws ON ws.id = a.stage_id');
 
 		// Join over the categories.
 		$query->select('c.title AS category_title, c.path AS category_route, c.access AS category_access, c.alias AS category_alias,' .

@@ -76,16 +76,16 @@ class FeaturedModel extends ArticlesModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
-		$user = Factory::getUser();
+		$user  = Factory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
 				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.state, a.access, a.created, a.hits,' .
-					'a.created_by, a.featured, a.language, a.created_by_alias, a.publish_up, a.publish_down, a.note'
+				'a.created_by, a.featured, a.language, a.created_by_alias, a.publish_up, a.publish_down, a.note'
 			)
 		);
 		$query->from('#__content AS a');
@@ -119,26 +119,25 @@ class FeaturedModel extends ArticlesModel
 		$query->select('ua.name AS author_name')
 			->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
-		// Join over the workflow asociations.
-		$query->select('wa.stage_id AS stage_id')
-			->join('LEFT', '#__workflow_associations AS wa ON wa.item_id = a.id');
+		// Select stage id
+		$query->select('a.stage_id');
 
 		// Join over the workflow stages.
-		$query	->select(
-					$query->quoteName(
-					[
-						'ws.title',
-						'ws.condition',
-						'ws.workflow_id'
-					],
-					[
-						'stage_title',
-						'stage_condition',
-						'workflow_id'
-					]
-					)
-				)
-				->join('INNER', '#__workflow_stages AS ws ON ' . $query->quoteName('ws.id') . ' = ' . $query->quoteName('wa.stage_id'));
+		$query->select(
+			$query->quoteName(
+				[
+					'ws.title',
+					'ws.condition',
+					'ws.workflow_id'
+				],
+				[
+					'stage_title',
+					'stage_condition',
+					'workflow_id'
+				]
+			)
+		)
+			->join('INNER', '#__workflow_stages AS ws ON ' . $query->quoteName('ws.id') . ' = ' . $query->quoteName('a.stage_id'));
 
 		// Join on voting table
 		if (PluginHelper::isEnabled('content', 'vote'))
@@ -201,15 +200,15 @@ class FeaturedModel extends ArticlesModel
 		$query->where($db->quoteName('wa.extension') . '=' . $db->quote('com_content'));
 
 		// Filter by a single or group of categories.
-		$baselevel = 1;
+		$baselevel  = 1;
 		$categoryId = $this->getState('filter.category_id');
 
 		if (is_numeric($categoryId))
 		{
 			$cat_tbl = \JTable::getInstance('Category', 'JTable');
 			$cat_tbl->load($categoryId);
-			$rgt = $cat_tbl->rgt;
-			$lft = $cat_tbl->lft;
+			$rgt       = $cat_tbl->rgt;
+			$lft       = $cat_tbl->lft;
 			$baselevel = (int) $cat_tbl->level;
 			$query->where('c.lft >= ' . (int) $lft)
 				->where('c.rgt <= ' . (int) $rgt);
