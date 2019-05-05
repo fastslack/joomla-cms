@@ -39,16 +39,14 @@ class ArticlesArchiveHelper
 		$app = Factory::getApplication();
 
 		// Get database
-		$db    = Factory::getDbo();
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true);
 		$query->select($query->month($db->quoteName('created')) . ' AS created_month')
 			->select('MIN(' . $db->quoteName('created') . ') AS created')
 			->select($query->year($db->quoteName('created')) . ' AS created_year')
 			->from($db->quoteName('#__content', 'c'))
-			->innerJoin($db->quoteName('#__workflow_associations', 'wa') . ' ON wa.item_id = c.id')
-			->innerJoin($db->quoteName('#__workflow_stages', 'ws') . ' ON wa.stage_id = ws.id')
-			->where($db->quoteName('ws.condition') . ' = ' . (int) ContentComponent::CONDITION_ARCHIVED)
+			->where($db->quoteName('c.state') . ' = ' . ContentComponent::CONDITION_ARCHIVED)
 			->group($query->year($db->quoteName('c.created')) . ', ' . $query->month($db->quoteName('c.created')))
 			->order($query->year($db->quoteName('c.created')) . ' DESC, ' . $query->month($db->quoteName('c.created')) . ' DESC');
 

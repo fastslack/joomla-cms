@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 
 /**
  * Helper for mod_stats
@@ -45,32 +46,32 @@ class StatsHelper
 
 		if ($serverinfo)
 		{
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_('MOD_STATS_OS');
 			$rows[$i]->data  = substr(php_uname(), 0, 7);
 			$i++;
 
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_('MOD_STATS_PHP');
 			$rows[$i]->data  = PHP_VERSION;
 			$i++;
 
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_($db->name);
 			$rows[$i]->data  = $db->getVersion();
 			$i++;
 
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_('MOD_STATS_TIME');
 			$rows[$i]->data  = HTMLHelper::_('date', 'now', 'H:i');
 			$i++;
 
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_('MOD_STATS_CACHING');
 			$rows[$i]->data  = $app->get('caching') ? Text::_('JENABLED') : Text::_('JDISABLED');
 			$i++;
 
-			$rows[$i] = new \stdClass;
+			$rows[$i]        = new \stdClass;
 			$rows[$i]->title = Text::_('MOD_STATS_GZIP');
 			$rows[$i]->data  = $app->get('gzip') ? Text::_('JENABLED') : Text::_('JDISABLED');
 			$i++;
@@ -94,11 +95,7 @@ class StatsHelper
 			$query->clear()
 				->select('COUNT(' . $db->quoteName('c.id') . ') AS count_items')
 				->from($db->quoteName('#__content', 'c'))
-				->leftJoin(
-					$db->quoteName('#__workflow_stages', 'ws')
-					. ' ON ' . $db->quoteName('ws.id') . ' = ' . $db->quoteName('c.state')
-				)
-				->where($db->quoteName('ws.condition') . ' = 1');
+				->where($db->quoteName('c.state') . ' = ' . ContentComponent::CONDITION_PUBLISHED);
 			$db->setQuery($query);
 
 			try
@@ -112,7 +109,7 @@ class StatsHelper
 
 			if ($users)
 			{
-				$rows[$i] = new \stdClass;
+				$rows[$i]        = new \stdClass;
 				$rows[$i]->title = Text::_('MOD_STATS_USERS');
 				$rows[$i]->data  = $users;
 				$i++;
@@ -120,7 +117,7 @@ class StatsHelper
 
 			if ($items)
 			{
-				$rows[$i] = new \stdClass;
+				$rows[$i]        = new \stdClass;
 				$rows[$i]->title = Text::_('MOD_STATS_ARTICLES');
 				$rows[$i]->data  = $items;
 				$i++;
@@ -132,11 +129,7 @@ class StatsHelper
 			$query->clear()
 				->select('SUM(' . $db->quoteName('hits') . ') AS count_hits')
 				->from($db->quoteName('#__content'))
-				->leftJoin(
-					$db->quoteName('#__workflow_stages', 'ws')
-					. ' ON ' . $db->quoteName('ws.id') . ' = ' . $db->quoteName('state')
-				)
-				->where($db->quoteName('ws.condition') . ' = 1');
+				->where($db->quoteName('state') . ' = ' . ContentComponent::CONDITION_PUBLISHED);
 			$db->setQuery($query);
 
 			try
@@ -150,7 +143,7 @@ class StatsHelper
 
 			if ($hits)
 			{
-				$rows[$i] = new \stdClass;
+				$rows[$i]        = new \stdClass;
 				$rows[$i]->title = Text::_('MOD_STATS_ARTICLES_VIEW_HITS');
 				$rows[$i]->data  = $hits + $increase;
 				$i++;
