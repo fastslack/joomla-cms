@@ -57,11 +57,11 @@ JLoader::register('PasswordHash', JPATH_PLATFORM . '/phpass/PasswordHash.php');
  *
  * @deprecated  4.0
  */
-const JROUTER_MODE_RAW = 0;
+//const JROUTER_MODE_RAW = 0;
 
 /**
  * Mask for the SEF routing mode
  *
  * @deprecated  4.0
  */
-const JROUTER_MODE_SEF = 1;
+//const JROUTER_MODE_SEF = 1;
